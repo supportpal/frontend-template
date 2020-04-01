@@ -1,0 +1,25 @@
+<h2>{{ Lang.choice('selfservice.category', 2) }}</h2>
+
+{% if not categories.isEmpty() %}
+    <div class="sp-flex sp-flex-wrap sp--m-3">
+        {% for category in categories %}
+            {% if not category.articles.isEmpty() %}
+            <div class="sp-w-full sp-p-3 md:sp-w-1/2">
+                <a class='sp-category-title sp-block sp-px-3 sp-py-3/2 sp-mb-3 sp-bg-secondary sp-shadow sp-rounded hover:sp-bg-tertiary'
+                   href='{{ category.frontend_url }}'>
+                    <i class="fas fa-fw fa-folder-open"></i>&nbsp; {{ category.name }} ({{ category.count }})
+                </a>
+                <ul class="sp-pl-5 sp-category-article-list">
+                    {% for article in category.articles %}
+                        <li>
+                            <a href='{{ article.url(type) }}'>{{ article.title }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% else %}
+    {{ Lang.get('selfservice.no_categories_frontend') }}
+{% endif %}

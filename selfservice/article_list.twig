@@ -1,0 +1,40 @@
+{% if not articles.isEmpty() %}
+    <ul class="sp-article-list">
+        {% for article in articles %}
+            {% if type|default is empty %}
+                {# article.categories is pre filtered to categories the user can view, while article.types is not #}
+                {% set type = article.categories.first().type %}
+            {% endif %}
+
+            <li data-slug="{{ article.slug }}">
+                <a href='{{ article.url(type) }}'>
+                    <h4>
+                        {% if show_pinned|default is not empty and show_pinned and article.pinned %}
+                            <span class="sp-float-left">
+                                <i class="fas fa-thumbtack sp-mr-1 sp-text-yellow-600" aria-hidden="true"></i> &nbsp;
+                            </span>
+                        {% endif %}
+                        {{ article.title }}
+                    </h4>
+                    <p class="sp-description sp-truncate">{{ article.excerpt }}</p>
+                </a>
+
+                {% include 'frontend.' ~ template ~ '.selfservice.article_details' %}
+            </li>
+        {% endfor %}
+    </ul>
+
+    {{ articles.render()|raw }}
+
+    {% if type|default is not empty and type.view == 1 and noRssFeed is not defined %}
+        <div class="sp-mt-6 sp-text-center print:sp-hidden">
+            <a href="{{ rssFeedLink }}" class="sp-inline-block sp-px-3 sp-py-2 sp-bg-secondary sp-rounded sp-shadow hover:sp-bg-tertiary">
+                <i class="fas fa-rss-square sp-text-orange-600"></i>&nbsp;
+                {{ Lang.get('selfservice.rssfeed') }}
+            </a>
+        </div>
+    {% endif %}
+
+{% else %}
+    {{ Lang.get('selfservice.no_articles') }}
+{% endif %}

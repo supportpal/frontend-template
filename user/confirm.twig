@@ -1,0 +1,27 @@
+{% extends parent_template %}
+
+{% block title %}{{ Lang.get('user.confirmation') }}{% endblock %}
+
+{% block breadcrumb %}
+	{{ parent() }}
+	{{ Lang.get('user.confirmation') }}
+{% endblock %}
+
+{% block content %}
+
+    {% if error is not defined %}
+		<div class="sp-alert sp-alert-success sp-alert-m-0">
+			<strong>{{ Lang.get('messages.success') }}</strong><br />
+			{{ Lang.get('user.thank_you_confirm') }}
+			{% if not auth_check() %}
+				{{ Lang.get('user.continue_to_login', {'route': route('user.login')})|raw }}
+			{% endif %}
+		</div>
+	{% else %}
+		<div class="sp-alert sp-alert-error sp-alert-m-0">
+			<strong>{{ Lang.get('messages.error') }}</strong><br />
+			{{ error }}
+		</div>
+	{% endif %}
+
+{% endblock %}

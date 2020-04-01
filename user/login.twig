@@ -1,0 +1,105 @@
+{% extends parent_template %}
+
+{% block title %}{{ Lang.get('user.login') }}{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+    {{ Lang.get('user.login') }}
+{% endblock %}
+
+{% block content %}
+
+    {% if not Session.has('error') and Session.has('social_metadata') %}
+        <div class="sp-alert">
+            {{ Lang.get('user.social_linking_login') }}
+        </div>
+    {% endif %}
+
+    {{ form_open({'route': 'user.login', 'method': 'post', 'class': 'validate sp-w-full sp-m-auto md:sp-w-2/3 xl:sp-w-1/2'}) }}
+
+        {% if intended_url is not null %}
+            {{ form_hidden('back', intended_url) }}
+        {% endif %}
+
+        <div class="sp-form-row">
+            {{ form_label('email', Lang.get('general.email')) }}
+            <div class="sp-input-container">
+                {{ form_email('email', null, {'autofocus': 'autofocus'}) }}
+            </div>
+        </div>
+
+        <div class="sp-form-row">
+            {{ form_label('password', Lang.get('general.password')) }}
+            <div class="sp-input-container">
+                {{ form_password('password') }}
+                <div class="sp-mt-2 sp-description">
+                    <a href="{{ route('user.reset') }}">{{ Lang.get('user.forgot_password') }}</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="sp-form-row">
+            <label></label>
+            <div class="sp-input-container">
+                <label>
+                    {{ form_check('remember_me', '1') }} {{ Lang.get('user.remember_me') }}
+                </label>
+            </div>
+        </div>
+
+        <div class="sp-form-row">
+            <label></label>
+            <div class="sp-input-container">
+                {{ form_submit(Lang.get('user.login')) }}
+            </div>
+        </div>
+
+        {% if not Request.has('social') %}
+            <div class="sp-text-center">
+                {% if SamlAuth.exists(SamlAuth.frontendGuard(current_brand(false))) %}
+                    <div class="sp-description sp--mx-6 sp-my-6 sp-border-b sp-border-secondary sp-text-center sp-leading-0">
+                        <span class="sp-bg-primary sp-px-4">{{ Lang.get('general.or') }}</span>
+                    </div>
+
+                    <input type="button" class="saml sp-button"
+                           onclick="location.href='{{ route('frontend.saml_login', {'intended': intended_url is not null ? intended_url : ''}) }}';"
+                           value="{{ Lang.get('user.login_via', {'provider': Config.get('saml.guards.' ~ SamlAuth.frontendGuard(current_brand(false)) ~ '.idp.name', Lang.get('user.idp'))}) }}" />
+                {% endif %}
+
+                {% if not socialite_providers.isEmpty() %}
+                    <div class="sp-description sp--mx-6 sp-my-6 sp-border-b sp-border-secondary sp-text-center sp-leading-0">
+                        <span class="sp-bg-primary sp-px-4">{{ Lang.get('general.or') }}</span>
+                    </div>
+
+                    {% for provider, metadata in all_providers %}
+                        {% if socialite_providers.contains('name', provider) %}
+                            <a href="{{ route('user.oauth_redirect', {'provider': provider}) }}"
+                               class="sp-social-login sp-px-4 sp-m-3/2" style="background-color: {{ metadata.colour }};">
+                                <span class="sp-mr-1">
+                                    <i class="fab fa-{{ provider }} fa-fw"></i>
+                                </span>
+                                {{ Lang.get('user.login_via', {'provider': metadata.name }) }}
+                            </a><br />
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+            <div class="sp-text-center">
+                {% if Config.get('settings.registration_enabled') == 1 %}
+                    <hr />
+
+                    <a href="{{ route('user.register') }}">{{ Lang.get('user.register_now') }}</a>
+                {% endif %}
+            </div>
+        {% endif %}
+
+    {{ form_close() }}
+
+{% endblock %}
+
+{% block scripts_footer %}
+    {% if jsValidator|default is not empty %}
+        {{ jsValidator|raw }}
+    {% endif %}
+{% endblock %}

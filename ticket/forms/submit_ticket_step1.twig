@@ -1,0 +1,66 @@
+{% extends parent_template %}
+
+{% block title %}{{ Lang.get('core.submit_ticket') }}{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+    {{ Lang.get('core.submit_ticket') }}
+{% endblock %}
+
+{% block content %}
+
+    {{ form_open({ 'route': [ 'ticket.frontend.ticket.storeStep1' ], 'class': 'validate' }) }}
+
+        {{ form_hidden('department', Request.input('department')) }}
+
+        <h2>{{ Lang.get('ticket.enter_your_details') }}</h2>
+
+        <p class="sp-description">{{ Lang.get('ticket.enter_user_details') }}</p>
+
+        {% set email = Request.old('email') %}
+        {% if email %}
+            <div class="sp-form-row">
+                {{ form_label('firstname', Lang.get('user.firstname')) }}
+                <div class="sp-input-container">
+                    {{ form_text('firstname', null, {'autofocus': 'autofocus'}) }}
+                </div>
+            </div>
+
+            <div class="sp-form-row">
+                {{ form_label('lastname', Lang.get('user.lastname')) }}
+                <div class="sp-input-container">
+                    {{ form_text('lastname') }}
+                </div>
+            </div>
+        {% endif %}
+
+        <div class="sp-form-row">
+            {{ form_label('email', Lang.get('general.email')) }}
+            <div class="sp-input-container">
+                {{ form_email('email', email, (email ? {} : {'autofocus': 'autofocus'})) }}
+            </div>
+        </div>
+
+        {% if email and Config.get('settings.organisations_enabled') %}
+            <div class="sp-form-row">
+                {{ form_label('organisation', Lang.choice('user.organisation', 1)) }}
+                <div class="sp-input-container">
+                    {{ form_text('organisation') }} &nbsp;
+                    <span class="sp-description">({{ Lang.get('general.optional') }})</span>
+                </div>
+            </div>
+        {% endif %}
+
+        <div class="sp-form-button">
+            {{ form_submit(Lang.choice('general.submit', 1)) }}
+        </div>
+
+    {{ form_close() }}
+
+{% endblock %}
+
+{% block scripts_footer %}
+    {% if jsValidator|default is not empty %}
+        {{ jsValidator|raw }}
+    {% endif %}
+{% endblock %}

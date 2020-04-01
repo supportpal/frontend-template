@@ -1,0 +1,67 @@
+{% extends parent_template %}
+
+{% block title %}{{ Lang.get('user.reset_password') }}{% endblock %}
+
+{% block breadcrumb %}
+	{{ parent() }}
+	{{ Lang.get('user.reset_password') }}
+{% endblock %}
+
+{% block content %}
+
+    {% if reset_error|default is not empty and reset_error %}
+
+		<div class="sp-alert sp-alert-error">{{ Lang.get('messages.error') }}</div>
+
+		{{ reset_error }}
+
+	{% else %}
+
+        {% if error is not empty %}
+			<div class="sp-alert sp-alert-error">{{ error }}</div>
+		{% endif %}
+
+		{{ Lang.get('user.please_set_password') }}
+		<br /><br />
+
+		{{ form_open({'route': 'user.resetconfirm', 'method': 'post', 'class': 'validate'}) }}
+
+			{{ form_hidden('email', Request.input('email')) }}
+			{{ form_hidden('token', Request.input('token')) }}
+
+			<div class="sp-form-row">
+				{{ form_label('password', Lang.get('general.password')) }}
+				<div class="sp-input-container">
+					{{ form_password('password', {'autocomplete': 'new-password'}) }}
+				</div>
+			</div>
+
+			<div class="sp-form-row">
+				{{ form_label('password_confirmation', Lang.get('user.confirm_password')) }}
+				<div class="sp-input-container">
+					{{ form_password('password_confirmation', {'autocomplete': 'new-password'}) }}
+				</div>
+			</div>
+
+			<div class="sp-form-button">
+				{{ form_submit(Lang.get('general.save')) }}
+			</div>
+
+		{{ form_close() }}
+
+	{% endif %}
+
+{% endblock %}
+
+{% block scripts_footer %}
+    <script type="text/javascript">
+        $(document).ready(function() {
+            // Enable hide/show password toggle
+            callHideShowPassword();
+        });
+    </script>
+
+    {% if jsValidator|default is not empty %}
+	    {{ jsValidator|raw }}
+    {% endif %}
+{% endblock %}

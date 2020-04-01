@@ -1,0 +1,17 @@
+{% extends parent_template %}
+
+{% block title %}{{ Lang.get('user.email_history') }}{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+    {{ Lang.get('user.email_history') }}
+{% endblock %}
+
+{% block content %}
+    {{ table.render()|raw }}
+{% endblock %}
+
+{% block scripts_footer %}
+    <script src="{{ asset_rev('resources/assets/libs/datatables/js/jquery.dataTables.min.js') }}"></script>
+    {{ table.script()|raw }}
+{% endblock %}

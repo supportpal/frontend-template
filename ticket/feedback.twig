@@ -1,0 +1,53 @@
+{% extends parent_template %}
+
+{% block title %}{{ Lang.get('ticket.feedback_for_ticket', {'number': ticket.number}) }}{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+    <a href="{{ route('ticket.frontend.ticket.index') }}">{{ Lang.choice('ticket.ticket', 2) }}</a> &nbsp;&raquo;&nbsp;
+    {{ Lang.choice('ticket.ticket', 1) }} #{{ ticket.number }}
+{% endblock %}
+
+{% block content %}
+
+    <div class="sp-alert sp-alert-success">{{ Lang.get('ticket.feedback_thank_you') }}</div>
+
+    {{ Lang.get('ticket.feedback_questions') }}
+
+    <br /><br />
+
+    {{ form_open({'route': ['ticket.frontend.ticket.feedback', ticket.number, token] }) }}
+
+        {% include 'frontend.' ~ template ~ '.forms.custom_fields' %}
+
+        <div class="sp-form-button">
+            {{ form_submit(Lang.get('general.save')) }}
+        </div>
+
+    {{ form_close() }}
+
+{% endblock %}
+
+{% block scripts_footer %}
+    <!-- Redactor -->
+    <script src="{{ asset_rev('resources/assets/libs/editor.min.js') }}"></script>
+    <script src="{{ asset_rev('resources/assets/general/js/editor_config.js') }}"></script>
+
+    <!-- Custom fields -->
+    <script src="{{ asset_rev('resources/assets/general/js/customfields.js') }}"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            // Enable hide/show password toggle
+            callHideShowPassword();
+
+            // Date picker
+            $('.datepicker').datepicker();
+
+            // Disable form button on click
+            $('form').on('submit', function () {
+                $(this).find("input[type='submit']").prop('disabled', true);
+            });
+        });
+    </script>
+{% endblock %}

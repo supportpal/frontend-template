@@ -1,0 +1,18 @@
+<!-- Meta -->
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="csrf_token" content="{{ csrf_token() }}" />
+<meta name="token" content="{{ Request.input('token') }}" />
+<meta name="date_format" content="{{ Config.get('settings.date_format') }}" />
+<meta name="max_file_size" content="{{ max_file_size }}" />
+<meta name="allowed_files" content="{{ allowed_files }}" />
+<meta name="environment" content="{{ Config.get('app.environment') }}" />
+
+<!-- Icon -->
+{% if Config.get('settings.favicon') is not empty %}
+    <link rel="icon" type="image/png" href="{{ Config.get('settings.favicon') }}" sizes="32x32" />
+{% endif %}
+
+<!-- CSS -->
+{{ colourScheme|raw }}
+<link data-include href="{{ asset_rev('resources/assets/frontend/css/main.min.css') }}" rel="stylesheet" type="text/css" />

@@ -1,0 +1,93 @@
+<form class="sp-message-form validate" data-ajax="ajax">
+
+    {{ form_hidden('send_email_to_users', 1) }}
+    {{ form_hidden('ticket_number', ticket.number) }}
+    {% if Request.has('token') %}
+        {{ form_hidden('token', Request.input('token')) }}
+    {% endif %}
+
+    <div class="sp-form-row sp-form-full">
+        <div class="sp-input-container">
+            <div class="sp-recipients sp-truncate sp-cursor-pointer">
+                <div class="sp-table-row">
+                    <div class="sp-table-cell">{{ Lang.get('ticket.cc') }}</div>
+                    <div class="sp-table-cell">
+                        <div class="sp-recipients-text">
+                            {% if organisationEmails is empty and ticket.cc is empty %}
+                                <div class="sp-description">{{ Lang.get('ticket.cc_desc') }}</div>
+                            {% else %}
+                                {{ organisationEmails.concat(ticket.cc).join(', ') }}
+                            {% endif %}
+                        </div>
+
+                        <select name="cc[]" multiple="multiple" class="sp-recipients-input sp-hidden">
+                            {% for email in organisationEmails %}
+                                <option selected="selected" data-data='{{ {'value': email, 'unremovable': true}|json_encode(constant('JSON_FORCE_OBJECT')) }}'
+                                        value='{{ email }}'>
+                                    {{ email }}
+                                </option>
+                            {% endfor %}
+                            {% for email in ticket.cc %}
+                                <option selected="selected" value='{{ email }}'>{{ email }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sp-redactor-rounded-t-none">
+                {{ form_redactor('text') }}
+            </div>
+
+            <div class="sp-attachment-details">
+                <input type="hidden" name="attachment[]" disabled="disabled" />
+            </div>
+
+            <ul class="sp-attached-files">
+                <li class="sp-flex sp-hidden">
+                    <div class="sp-mr-2 sp-truncate">
+                        <i class="fas fa-file"></i>&nbsp;
+
+                        <span class="sp-file-information">
+                            <span class="sp-filename"></span>
+                            <span class="sp-description sp-filesize"></span>
+                        </span>
+                    </div>
+
+                    <div class="sp-delete-attachment sp-hidden sp-bg-red-600">
+                        <i class="fas fa-times sp-text-white"></i>
+                    </div>
+
+                    <div class="sp-progress-bar">
+                        <div class="sp-bar"></div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="sp-mt-4">
+        <div class="sp-attachment-dragover sp-hidden">
+            {{ Lang.get('general.drag_and_drop') }}
+        </div>
+
+        <label class="sp-file-input">
+            <a class="sp-button"><i class="fas fa-paperclip"></i>&nbsp; {{ Lang.get('general.add_attachment') }}</a>
+            <input class="sp-file-upload" type="file" name="files[]"
+                   data-url="{{ route('ticket.frontend.attachment.upload') }}" multiple="multiple">
+        </label>
+    </div>
+
+    <div class="sp-mt-6">
+        {{ form_submit(Lang.choice('general.post', 1)) }}
+
+        {% if ticket.status_id != Config.get('settings.default_resolved_status') %}
+        &nbsp;&nbsp;
+            <a href="{{ route('ticket.frontend.ticket.close', ticket.number) }}{% if Request.input('token') is not empty %}?token={{ Request.input('token') }}{% endif %}"
+               class="mark-resolved sp-button">
+                {{ Lang.get('ticket.mark_resolved') }}
+            </a>
+        {% endif %}
+    </div>
+
+</form>

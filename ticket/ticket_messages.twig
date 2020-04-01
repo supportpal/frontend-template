@@ -1,0 +1,7 @@
+<div class="sp-message-block">
+    {% for message in messages %}
+        {% if message.type == 0 %}
+            {% include 'frontend.' ~ template ~ '.ticket.message' %}
+        {% endif %}
+    {% endfor %}
+</div>

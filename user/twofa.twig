@@ -1,0 +1,56 @@
+{% extends parent_template %}
+
+{% block title %}{{ Lang.get('user.two_fa') }}{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+    {{ Lang.get('user.two_fa') }}
+{% endblock %}
+
+{% block content %}
+
+    <div class="sp-form-row {% if auth_user().twofa_enabled and Config.get('settings.force_2fa_users') %}sp-mb-0{% endif %}">
+        {{ form_label('twofa_enabled', Lang.get('user.two_fa_enabled')) }}
+        <div class="sp-input-container">
+            <strong class="twofa-enabled sp-text-green-600 {% if not auth_user().twofa_enabled %}sp-hidden{% endif %}">
+                {{ Lang.get('general.yes') }}
+            </strong>
+            <strong class="twofa-enabled sp-text-red-600 {% if auth_user().twofa_enabled %}sp-hidden{% endif %}">
+                {{ Lang.get('general.no') }}
+            </strong>
+            {% if not Config.get('settings.force_2fa_users') %}
+                <div class="sp-description sp-mt-3">
+                    {% if auth_user().twofa_enabled %}
+                        {{ Lang.get('user.two_fa_disable') }}
+                    {% else %}
+                        {{ Lang.get('user.two_fa_enable') }}
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <form method="post" action="{{ route('user.twofa') }}">
+        <input type="hidden" name="enable" value="{{ 1 - auth_user().twofa_enabled }}" />
+        <input type="hidden" name="twofa_secret" value="{{ twofa_secret }}" />
+        {{ csrf_field() }}
+
+        {% if auth_user().twofa_enabled and not Config.get('settings.force_2fa_users') %}
+
+            <div class="sp-form-row">
+                {{ form_label('twofa_code', Lang.get('user.verify_code')) }}
+                <div class="sp-input-container">
+                    {{ form_text('twofa_code') }}<br />
+                    {{ form_submit(Lang.get('user.verify_and_disable'), {'class': 'twofa-verify sp-mt-3'}) }}
+                    <div class="sp-description">{{ Lang.get('user.verify_code_desc') }}</div>
+                </div>
+            </div>
+
+        {% elseif not auth_user().twofa_enabled %}
+
+            {% include 'frontend.' ~ template ~ '.user.forms.twofa' %}
+
+        {% endif %}
+    </form>
+
+{% endblock %}

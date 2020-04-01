@@ -1,0 +1,39 @@
+{% extends parent_template %}
+
+{% block title %}{{ Lang.get('user.linked_accounts') }}{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+    {{ Lang.get('user.linked_accounts') }}
+{% endblock %}
+
+{% block content %}
+
+    {% if not socialite_providers.isEmpty() %}
+        <div class="sp--m-3/2 sp-text-center">
+            {% for provider, metadata in all_providers %}
+                {% if socialite_providers.contains('name', provider) %}
+                    <a href="{{ route('user.oauth_redirect', {'provider': provider}) }}"
+                       class="sp-social-login sp-px-4 sp-m-3/2" style="background-color: {{ metadata.colour }};">
+                        <span class="sp-mr-1">
+                            <i class="fab fa-{{ provider }} fa-fw"></i>
+                        </span>
+                        {{ Lang.get('user.login_via', {'provider': metadata.name }) }}
+                    </a>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        <hr />
+    {% endif %}
+
+    {{ table.render()|raw }}
+
+{% endblock %}
+
+{% block scripts_footer %}
+    <script type="text/javascript" src="{{ asset_rev('resources/assets/general/js/linked_account.js') }}"></script>
+
+    <script src="{{ asset_rev('resources/assets/libs/datatables/js/jquery.dataTables.min.js') }}"></script>
+    {{ table.script()|raw }}
+{% endblock %}

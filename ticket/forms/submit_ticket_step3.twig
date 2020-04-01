@@ -1,0 +1,216 @@
+{% extends parent_template %}
+
+{% block title %}{{ Lang.get('core.submit_ticket') }}{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+    {{ Lang.get('core.submit_ticket') }}
+{% endblock %}
+
+{% block precontent %}
+    <div class="sp-alert sp-alert-error sp-alert-sticky sp-hidden attachment">
+        <div class="sp-container sp-mx-auto"></div>
+    </div>
+{% endblock %}
+
+{% block content %}
+
+    {{ form_open({'route': 'ticket.frontend.ticket.storeStep3', 'class': 'validate'}) }}
+
+        {% if not auth_check() %}
+            {{ form_hidden('email', guest_user.email) }}
+
+            {% if guest_user.firstname is not empty %}
+                {{ form_hidden('firstname', guest_user.firstname) }}
+            {% endif %}
+            {% if guest_user.lastname is not empty %}
+                {{ form_hidden('lastname', guest_user.lastname) }}
+            {% endif %}
+            {% if guest_user.organisation is not empty %}
+                {{ form_hidden('organisation', guest_user.organisation) }}
+            {% endif %}
+        {% endif %}
+
+        <h2>{{ Lang.get('ticket.enter_ticket_details') }}</h2>
+
+        <hr />
+
+        <div class="sp-form-row">
+            {{ form_label('department', Lang.choice('ticket.department', 1)) }}
+            <div class="sp-input-container">
+                {{ form_hidden('department', department.id) }}
+                <span class="department-name">{{ department.frontend_name }}</span>
+            </div>
+        </div>
+
+        <div class="sp-form-row">
+            {{ form_label('priority', Lang.choice('ticket.priority', 1)) }}
+            <div class="sp-input-container">
+                {{ form_select('priority', department_priorities, null, {'autofocus': 'autofocus'}) }}
+            </div>
+        </div>
+
+        {% if organisationUsers is not empty %}
+            <div class="sp-form-row">
+                {{ form_label('organisationUsers', Lang.get('user.organisation_users')) }}
+                <div class="sp-input-container">
+                    {{ organisationUsers.implode(', ') }}
+                    <div class="sp-description">{{ Lang.get('user.organisation_users_ticket') }}</div>
+                </div>
+            </div>
+        {% endif %}
+
+        <div class="sp-form-row sp-form-full">
+            {{ form_label('cc[]', Lang.get('ticket.cc')) }}
+            <div class="sp-input-container">
+                {{ form_select('cc[]', [], [], {'multiple': 'multiple'}) }}
+                <div class="sp-description">{{ Lang.get('ticket.cc_desc') }}</div>
+            </div>
+        </div>
+
+        <hr />
+
+        <div class="sp-form-row sp-form-full">
+            {{ form_label('subject', Lang.get('ticket.subject')) }}
+            <div class="sp-input-container">
+                {{ form_text('subject') }}
+            </div>
+        </div>
+
+        <div class="sp-form-row sp-form-full sp-suggested-articles sp-hidden">
+            <label></label>
+            <div class="sp-input-container">
+                <div class="sp-p-6 sp-bg-secondary sp-rounded">
+                    <h4 class="sp-mb-3">{{ Lang.get('selfservice.related_articles') }}</h4>
+                    <div class="sp-articles-list"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="sp-form-row sp-form-full">
+            {{ form_label('text', Lang.choice('general.message', 1)) }}
+            <div class="sp-input-container">
+                {{ form_redactor('text') }}
+
+                <div class="sp-attachment-details">
+                    <input type="hidden" name="attachment[]" disabled="disabled" />
+                    {% if Request.old() is not empty and Request.old()['attachment'] is not empty %}
+                        {% for hash, file in Request.old()['attachment'] %}
+                            <input type="hidden" name="attachment[{{ hash }}]" id="attachment[{{ hash }}]" value="{{ file }}" />
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                <ul class="sp-attached-files">
+                    <li class="sp-flex sp-hidden">
+                        <div class="sp-mr-2 sp-truncate">
+                            <i class="fas fa-file"></i>&nbsp;
+
+                            <span class="sp-file-information">
+                                <span class="sp-filename"></span>
+                                <span class="sp-description sp-filesize"></span>
+                            </span>
+                        </div>
+
+                        <div class="sp-delete-attachment sp-hidden sp-bg-red-600">
+                            <i class="fas fa-times sp-text-white"></i>
+                        </div>
+
+                        <div class="sp-progress-bar">
+                            <div class="sp-bar"></div>
+                        </div>
+                    </li>
+                    {% if Request.old() is not empty and Request.old()['attachment'] is not empty %}
+                        {% for hash, file in Request.old()['attachment'] %}
+                            <li class="sp-flex">
+                                <div class="sp-mr-2 sp-truncate">
+                                    <i class="fas fa-file"></i>&nbsp;
+
+                                    <span class="sp-file-information">
+                                        <span class="sp-filename sp-ellipsis">{{ file }}</span>
+                                        <span class="sp-description sp-filesize"></span>
+                                    </span>
+                                </div>
+
+                                <div class="sp-delete-attachment sp-bg-red-600"
+                                     data-url="{{ route('ticket.frontend.attachment.destroy') }}"
+                                     data-hash="{{ hash }}">
+                                    <i class="fas fa-times sp-text-white"></i>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    {% endif %}
+                </ul>
+
+                <div class="sp-mt-4">
+                    <div class="sp-attachment-dragover sp-hidden">
+                        {{ Lang.get('general.drag_and_drop') }}
+                    </div>
+
+                    <label class="sp-file-input">
+                        <a class="sp-button"><i class="fas fa-paperclip"></i>&nbsp; {{ Lang.get('general.add_attachment') }}</a>
+                        <input class="sp-file-upload" type="file" name="files[]"
+                               data-url="{{ route('ticket.frontend.attachment.upload') }}" multiple="multiple">
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        {% include 'frontend.' ~ template ~ '.forms.custom_fields' with {'new': true} %}
+
+        {% if showCaptcha %}
+            {% if Captcha.isVisible() %}
+                <hr />
+
+                <div class="sp-form-row sp-items-center">
+                    <label>{{ Lang.get('core.captcha') }}</label>
+                    <div class="sp-input-container">
+                        {{ Captcha.getHtml() }}
+                    </div>
+                </div>
+            {% else %}
+                {{ Captcha.getHtml() }}
+            {% endif %}
+        {% endif %}
+
+        <div class="sp-form-button">
+            {{ form_submit(Lang.choice('general.submit', 1)) }}
+        </div>
+
+    {{ form_close() }}
+
+{% endblock %}
+
+{% block scripts_footer %}
+    <script type="text/javascript">
+        // If we should attempt to fetch related articles
+        var relatedArticlesEnabled;
+        {% if isModuleEnabled('Selfservice') and Config.get('channel.web.settings.show_related_articles') %}
+            relatedArticlesEnabled = true;
+        {% else %}
+            relatedArticlesEnabled = false;
+        {% endif %}
+    </script>
+
+    <script type="text/javascript" src="{{ asset_rev('resources/assets/frontend/js/newticket.js') }}"></script>
+
+    <script src="{{ asset_rev('resources/assets/libs/editor.min.js') }}"></script>
+    <script src="{{ asset_rev('resources/assets/general/js/editor_config.js') }}"></script>
+
+    <!-- Attachments -->
+    <script src="{{ asset_rev('resources/assets/libs/fileupload/js/jquery.fileupload.min.js') }}"></script>
+    <script type="text/javascript">
+        new FileUpload();
+    </script>
+
+    <!-- Custom fields -->
+    <script src="{{ asset_rev('resources/assets/general/js/customfields.js') }}"></script>
+
+    {% if showCaptcha %}
+        {{ Captcha.getJs() }}
+    {% endif %}
+
+    {% if jsValidator|default is not empty %}
+        {{ jsValidator|raw }}
+    {% endif %}
+{% endblock %}

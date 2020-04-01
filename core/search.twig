@@ -1,0 +1,23 @@
+{% extends parent_template %}
+
+{% block title %}{{ Lang.get('core.search_results') }}{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+    {{ Lang.get('core.search_results') }}
+{% endblock %}
+
+{% block content %}
+
+    {{ Lang.get('core.found_results', {'total': total}) }} '<strong>{{ Request.input('query') }}</strong>'.
+
+    {% if total > 0 %}
+        <hr />
+
+        {%
+            include 'frontend.' ~ template ~ '.selfservice.article_list'
+            with {'articles': articles, 'noRssFeed': true, 'show_pinned': false}
+        %}
+    {% endif %}
+
+{% endblock %}

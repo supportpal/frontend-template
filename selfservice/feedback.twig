@@ -1,0 +1,9 @@
+{{ Lang.get('ticket.feedback_questions') }}
+
+<br /><br />
+
+<div class="sp-text-left">
+    <input type="hidden" name="form_id" value="{{ form.id }}" />
+
+    {% include 'frontend.' ~ template ~ '.forms.custom_fields' %}
+</div>

@@ -1,0 +1,11 @@
+<form class="sp-custom-fields sp-mt-3 validate">
+    {% include 'frontend.' ~ template ~ '.forms.custom_fields' %}
+
+    {% if ticket.locked == 0 %}
+        <div class="sp-form-button print:sp-hidden">
+            <button class="sp-customfields-save sp-button-submit" data-token="{{ Request.input('token', '') }}" type="button">
+                {{ Lang.get('general.save') }}
+            </button>
+        </div>
+    {% endif %}
+</form>

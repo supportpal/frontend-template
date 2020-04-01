@@ -1,0 +1,50 @@
+{% extends parent_template %}
+
+{% block title %}{{ Lang.choice('user.organisation', 1) }}{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+    <a href="{{ route('user.organisation') }}">{{ Lang.choice('user.organisation', 1) }}</a> &nbsp;&raquo;&nbsp;
+    {{ Lang.get('user.organisation_add_user') }}
+{% endblock %}
+
+{% block content %}
+
+    {{ form_open({'route': [ 'user.organisation.addUser' ], 'method': 'POST', 'class': 'validate'}) }}
+
+        {% include 'frontend.' ~ template ~ '.user.forms.user_profile' with {'organisation_add': true} %}
+
+        {% include 'frontend.' ~ template ~ '.user.forms.organisation' with {'new': true} %}
+
+        {% include 'frontend.' ~ template ~ '.forms.custom_fields' with {'new': true} %}
+
+        <div class="sp-form-button">
+            {{ form_submit(Lang.get('user.add_user')) }}
+        </div>
+
+    {{ form_close() }}
+
+{% endblock %}
+
+{% block scripts_footer %}
+    <!-- Redactor -->
+    <script src="{{ asset_rev('resources/assets/libs/editor.min.js') }}"></script>
+    <script src="{{ asset_rev('resources/assets/general/js/editor_config.js') }}"></script>
+
+    <!-- Custom fields -->
+    <script src="{{ asset_rev('resources/assets/general/js/customfields.js') }}"></script>
+    
+    <script type="text/javascript">
+        $(document).ready(function() {
+            // Enable hide/show password toggle
+            callHideShowPassword();
+
+            // Date picker
+            $('.datepicker').datepicker();
+        });
+    </script>
+
+    {% if jsValidator|default is not empty %}
+        {{ jsValidator|raw }}
+    {% endif %}
+{% endblock %}

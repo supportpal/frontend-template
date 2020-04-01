@@ -1,0 +1,21 @@
+{% extends parent_template %}
+
+{% block title %}{{ Lang.get('general.maintenance') }}{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+    {{ Lang.get('general.maintenance') }}
+{% endblock %}
+
+{% block content %}
+
+    <h2>{{ Lang.get('core.maintenance') }}</h2>
+
+    <div class="sp-alert sp-alert-warning sp-alert-with-icon sp-alert-bottom">
+        <i class="sp-alert-icon fas fa-exclamation-triangle"></i>
+        <div class="sp-alert-content">
+            {{ Lang.get('core.maintenance_desc') }}
+        </div>
+    </div>
+
+{% endblock %}

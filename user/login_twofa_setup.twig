@@ -1,0 +1,32 @@
+{% extends parent_template %}
+
+{% block title %}{{ Lang.get('user.login') }}{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+    {{ Lang.get('user.login') }}
+{% endblock %}
+
+{% block content %}
+
+    <h2>{{ Lang.get('user.two_fa') }}</h2>
+
+    <p>{{ Lang.get('user.two_fa_required') }}</p>
+
+    {{ form_open({'route': 'user.login.twofa.setup', 'method': 'POST', 'class': 'validate'}) }}
+
+        {{ form_hidden('email', email) }}
+        {{ form_hidden('twofa_token', twofa_token) }}
+        {{ form_hidden('twofa_secret', twofa_secret) }}
+
+        {% include 'frontend.' ~ template ~ '.user.forms.twofa' %}
+
+    {{ form_close() }}
+
+{% endblock %}
+
+{% block scripts_footer %}
+    {% if jsValidator|default is not empty %}
+        {{ jsValidator|raw }}
+    {% endif %}
+{% endblock %}

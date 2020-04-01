@@ -1,0 +1,35 @@
+    <div class="sp-form-row">
+        {{ form_label('name', Lang.get('general.name')) }}
+        <div class="sp-input-container">
+            {{ form_text('name') }}
+        </div>
+    </div>
+
+    {% include 'frontend.' ~ template ~ '.forms.custom_fields' %}
+
+    <div class="sp-form-row">
+        {{ form_label('country', Lang.get('user.country')) }}
+        <div class="sp-input-container">
+            {{ form_select('country', countries(),
+                record.country|default is not empty ? record.country : Config.get('settings.default_country')) }}
+        </div>
+    </div>
+
+    {# Check whether we should allow organisations to change their default language #}
+    {% if Config.get('settings.language_frontend_toggle') %}
+        <div class="sp-form-row">
+            {{ form_label('language_code', Lang.choice('general.language', 1)) }}
+            <div class="sp-input-container">
+                {{ form_select('language_code', languages,
+                    record.language_code|default is not empty ? record.language_code : LanguageFactory.getUserDefault()) }}
+            </div>
+        </div>
+    {% endif %}
+
+    <div class="sp-form-row">
+        {{ form_label('timezone', Lang.get('general.timezone')) }}
+        <div class="sp-input-container">
+            {{ form_select('timezone', timezones(),
+                record|default is not empty and record.timezone|default is not empty ? record.timezone : Config.get('settings.default_timezone')) }}
+        </div>
+    </div>

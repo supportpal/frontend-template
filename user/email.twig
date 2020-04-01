@@ -1,0 +1,112 @@
+{% extends parent_template %}
+
+{% block title %}{{ Lang.get('user.view_email') }}{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+    <a href="{{ route('user.email_history') }}">{{ Lang.get('user.email_history') }}</a>
+    &nbsp;&raquo;&nbsp;
+    {{ Lang.get('user.view_email') }}
+{% endblock %}
+
+{% block content %}
+
+    <h2>{{ Lang.choice('general.detail', 2) }}</h2>
+
+    <div class="sp-mb-6 md:sp-p-6 md:sp-pb-0 md:sp-border md:sp-border-secondary md:sp-rounded">
+
+        <div class="sp-form-row">
+            <label>{{ Lang.get('ticket.subject') }}</label>
+            <div class="sp-input-container">
+                {{ record.subject }}
+            </div>
+        </div>
+
+        <div class="sp-form-row">
+            <label>{{ Lang.get('general.date') }}</label>
+            <div class="sp-input-container">
+                {{ formatDate(record.created_at) }}
+            </div>
+        </div>
+
+        {% if record.type|default is not empty %}
+            <div class="sp-form-row">
+                <label>{{ Lang.get('general.type') }}</label>
+                <div class="sp-input-container">
+                    {% if record.type == 0 %}
+                        {{ Lang.get('core.outgoing') }}
+                    {% elseif record.type == 1 %}
+                        {{ Lang.get('core.incoming') }}
+                    {% elseif record.type == 2 %}
+                        {{ Lang.get('core.incoming_spam') }}
+                    {% elseif record.type == 3 %}
+                        {{ Lang.get('core.incoming_throttled') }}
+                    {% else %}
+                        {{ Lang.get('core.incoming_rejected') }}
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+
+        {% if record.to is not empty %}
+            <div class="sp-form-row">
+                <label>{{ Lang.get('ticket.to') }}</label>
+                <div class="sp-input-container">
+                    {{ implode(", ", record.to) }}
+                </div>
+            </div>
+        {% endif %}
+
+        {% if record.from_address is not empty %}
+            <div class="sp-form-row">
+                <label>{{ Lang.get('ticket.from') }}</label>
+                <div class="sp-input-container">
+                    {{ record.from_address }}
+                </div>
+            </div>
+        {% endif %}
+
+        {% if record.reply_to is not empty %}
+            <div class="sp-form-row">
+                <label>{{ Lang.get('core.reply_to') }}</label>
+                <div class="sp-input-container">
+                    {{ record.reply_to }}
+                </div>
+            </div>
+        {% endif %}
+
+        {% if record.cc is not empty %}
+            <div class="sp-form-row">
+                <label>{{ Lang.get('ticket.cc') }}</label>
+                <div class="sp-input-container">
+                    {{ implode(", ", record.cc) }}
+                </div>
+            </div>
+        {% endif %}
+
+        {% if record.bcc is not empty %}
+            <div class="sp-form-row">
+                <label>{{ Lang.get('ticket.bcc') }}</label>
+                <div class="sp-input-container">
+                    {{ implode(", ", record.bcc) }}
+                </div>
+            </div>
+        {% endif %}
+
+    </div>
+
+    <h2>{{ Lang.get('general.content') }}</h2>
+
+    <div class="sp-email-content sp-p-6 sp-border sp-border-secondary sp-rounded sp-overflow-x-auto">
+        {{ Purifier.clean(record.contents) }}
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            // Open links in a new window/tab. Needs rel="noopener" due to
+            // https://www.jitbit.com/alexblog/256-targetblank---the-most-underestimated-vulnerability-ever/
+            $('.sp-email-content a').attr('target', '_blank').attr('rel', 'noopener');
+        });
+    </script>
+
+{% endblock %}

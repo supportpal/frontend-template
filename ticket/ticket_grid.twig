@@ -1,0 +1,103 @@
+{% extends parent_template %}
+
+{% block title %}{{ Lang.choice('ticket.ticket', 2) }}{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+    {{ Lang.choice('ticket.ticket', 2) }}
+{% endblock %}
+
+{% block content %}
+
+    <div class="sp-alert md:sp-block sp-hidden">
+        <a href="{{ route('ticket.frontend.ticket.createStep1') }}">
+            <i class="fas fa-plus"></i>&nbsp;
+            {{ Lang.get('core.submit_ticket') }}
+        </a>&nbsp;&nbsp;&nbsp;
+        <a class="sp-filter-results">
+            <i class="fas fa-filter"></i>&nbsp; {{ Lang.get('general.filter_results') }}
+        </a>
+    </div>
+
+    <div class="sp-filter-results sp-hidden">
+        <h3>{{ Lang.get('general.filter_results') }}</h3>
+
+        <div class="sp-table">
+            <div class="sp-table-row">
+                <label>{{ Lang.get('general.number') }}:</label>
+                <div>
+                    {{ form_text('sSearch_0', null, {'placeholder': Lang.get('general.type_to_filter')}) }}<!--
+                    -->{{ form_button('<i class="fas fa-fw fa-times"></i>', {'class': 'reset-filter'}) }}
+                </div>
+            </div>
+            <div class="sp-table-row">
+                <label>{{ Lang.get('general.subject') }}:</label>
+                <div>
+                    {{ form_text('sSearch_1', null, {'placeholder': Lang.get('general.type_to_filter')}) }}<!--
+                    -->{{ form_button('<i class="fas fa-fw fa-times"></i>', {'class': 'reset-filter'}) }}
+                </div>
+            </div>
+            <div class="sp-table-row">
+                <label>{{ Lang.choice('ticket.department', 1) }}:</label>
+                <div>
+                    {{ form_select('sSearch_2', {'-1': Lang.get('general.select_value')} + departments.pluck('name', 'id').all()) }}<!--
+                    -->{{ form_button('<i class="fas fa-fw fa-times"></i>', {'class': 'reset-filter'}) }}
+                </div>
+            </div>
+            <div class="sp-table-row">
+                <label>{{ Lang.choice('general.status', 1) }}:</label>
+                <div>
+                    {{ form_select('sSearch_3', {'-1': Lang.get('general.select_value')} + statuses.pluck('name', 'id').all()) }}<!--
+                    -->{{ form_button('<i class="fas fa-fw fa-times"></i>', {'class': 'reset-filter'}) }}
+                </div>
+            </div>
+            <div class="sp-table-row">
+                <label>{{ Lang.get('ticket.submitted') }}:</label>
+                <div>
+                    <span class="sp-block sm:sp-inline-block">
+                        {{ form_text('sSearch_4_start', null, {'class': 'datepicker sp-w-40', 'placeholder': '&#xf073; &nbsp;' ~ Lang.get('general.start_date')}) }}<!--
+                        -->{{ form_button('<i class="fas fa-fw fa-times"></i>', {'class': 'reset-filter'}) }}
+                    </span>
+                    <span class="sp-hidden sm:sp-inline-block">&nbsp;{{ Lang.get('general.to') }}&nbsp;</span>
+                    <span class="sp-block sp-mt-2 sm:sp-inline-block sm:sp-mt-0">
+                        {{ form_text('sSearch_4_end', null, {'class': 'datepicker sp-w-40', 'placeholder': '&#xf073; &nbsp;' ~ Lang.get('general.end_date')}) }}<!--
+                        -->{{ form_button('<i class="fas fa-fw fa-times"></i>', {'class': 'reset-filter'}) }}
+                    </span>
+                </div>
+            </div>
+            <div class="sp-table-row">
+                <label>{{ Lang.get('ticket.last_reply') }}:</label>
+                <div>
+                    <span class="sp-block sm:sp-inline-block">
+                        {{ form_text('sSearch_5_start', null, {'class': 'datepicker sp-w-40', 'placeholder': '&#xf073; &nbsp;' ~ Lang.get('general.start_date')}) }}<!--
+                        -->{{ form_button('<i class="fas fa-fw fa-times"></i>', {'class': 'reset-filter'}) }}
+                    </span>
+                    <span class="sp-hidden sm:sp-inline-block">&nbsp;{{ Lang.get('general.to') }}&nbsp;</span>
+                    <span class="sp-block sp-mt-2 sm:sp-inline-block sm:sp-mt-0">
+                        {{ form_text('sSearch_5_end', null, {'class': 'datepicker sp-w-40', 'placeholder': '&#xf073; &nbsp;' ~ Lang.get('general.end_date')}) }}<!--
+                        -->{{ form_button('<i class="fas fa-fw fa-times"></i>', {'class': 'reset-filter'}) }}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+	{{ table.render()|raw }}
+
+{% endblock %}
+
+{% block scripts_footer %}
+    <script src="{{ asset_rev('resources/assets/libs/datatables/js/jquery.dataTables.min.js') }}"></script>
+    {{ table.script()|raw }}
+
+    <script type="text/javascript" src="{{ asset_rev('resources/assets/general/js/queryfiltering.js') }}"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            // Toggle show/hide of the filters area
+            $('a.sp-filter-results').on('click', function() {
+                $('div.sp-filter-results').toggleClass('sp-hidden');
+            });
+        });
+    </script>
+{% endblock %}

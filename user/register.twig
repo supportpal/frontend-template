@@ -1,0 +1,101 @@
+{% extends parent_template %}
+
+{% block title %}{{ Lang.get('user.register') }}{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+    {{ Lang.get('user.register_account') }}
+{% endblock %}
+
+{% block content %}
+
+    {% if register_success|default is not empty and register_success %}
+
+        <div class="sp-alert sp-alert-success">{{ Lang.get('user.success_register') }}</div>
+        {{ Lang.get('user.success_register_desc') }}
+
+    {% else %}
+
+        {% if Session.has('social_metadata') %}
+            <div class="sp-alert">
+                {{ Lang.get('user.social_linking_register') }}
+                <br /><br />
+                {{ Lang.get('user.already_registered') }}
+                <a href="{{ route('user.login', {'social': 1}) }}">{{ Lang.get('user.login') }} &raquo;</a>
+            </div>
+        {% else %}
+            {% if not socialite_providers.isEmpty() %}
+                <div class="sp--m-3/2 sp-text-center">
+                    {% for provider, metadata in all_providers %}
+                        {% if socialite_providers.contains('name', provider) %}
+                            <a href="{{ route('user.oauth_redirect', {'provider': provider}) }}"
+                               class="sp-social-login sp-px-4 sp-m-3/2" style="background-color: {{ metadata.colour }};">
+                            <span class="sp-mr-1">
+                                <i class="fab fa-{{ provider }} fa-fw"></i>
+                            </span>
+                                {{ Lang.get('user.login_via', {'provider': metadata.name }) }}
+                            </a>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+
+                <hr />
+            {% endif %}
+        {% endif %}
+
+        {{ form_open({ 'route': [ 'user.register' ], 'method': 'post', 'files': true, 'class': 'validate' }) }}
+
+            {% include 'frontend.' ~ template ~ '.user.forms.user_profile' %}
+
+            {% include 'frontend.' ~ template ~ '.user.forms.organisation' %}
+
+            {% include 'frontend.' ~ template ~ '.forms.custom_fields' with {'new': true} %}
+
+            {% if Config.get('settings.captcha_type') != 0 and Config.get('settings.registration_captcha') %}
+                {% if Captcha.isVisible() %}
+                    <div class="sp-form-row sp-items-center">
+                        <label>{{ Lang.get('core.captcha') }}</label>
+                        <div class="sp-input-container">
+                            {{ Captcha.getHtml() }}
+                        </div>
+                    </div>
+                {% else %}
+                    {{ Captcha.getHtml() }}
+                {% endif %}
+            {% endif %}
+
+            <div class="sp-form-button">
+                {{ form_submit(Lang.get('user.register')) }}
+            </div>
+
+        {{ form_close() }}
+
+    {% endif %}
+
+{% endblock %}
+
+{% block scripts_footer %}
+    <!-- Redactor -->
+    <script src="{{ asset_rev('resources/assets/libs/editor.min.js') }}"></script>
+    <script src="{{ asset_rev('resources/assets/general/js/editor_config.js') }}"></script>
+
+    <!-- Custom fields -->
+    <script src="{{ asset_rev('resources/assets/general/js/customfields.js') }}"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            // Enable hide/show password toggle
+            callHideShowPassword();
+
+            // Date picker
+            $('.datepicker').datepicker();
+        });
+    </script>
+
+    {% if Config.get('settings.captcha_type') != 0 and Config.get('settings.registration_captcha') %}
+        {{ Captcha.getJs() }}
+    {% endif %}
+
+    {% if jsValidator|default is not empty %}
+        {{ jsValidator|raw }}
+    {% endif %}
+{% endblock %}

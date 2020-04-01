@@ -1,0 +1,165 @@
+{% extends parent_template %}
+
+{% block meta %}
+    <meta name="robots" content="noindex" />
+    {% if download %}
+        <meta http-equiv="refresh" content="2;{{ download.direct_frontend_url }}" />
+    {% endif %}
+{% endblock %}
+
+{% block title %}{{ ticket.subject }}{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+    <a href="{{ route('ticket.frontend.ticket.index') }}">{{ Lang.choice('ticket.ticket', 2) }}</a> &nbsp;&raquo;&nbsp;
+    {{ Lang.choice('ticket.ticket', 1) }} #{{ ticket.number }}
+{% endblock %}
+
+{% block sidebar %}
+    <div class="sp-sidebar sp-flex-none sp-w-full sp-px-6 sp-mb-4 xs:sp-px-0 xs:sp-mb-6 lg:sp-w-64 lg:sp-ml-8 lg:sp-mb-0">
+        {{ View.fireHook('frontend.sidebar_start') }}
+
+        <div class="sp-sidebar-box">
+            <h2 class="sp-hidden lg:sp-block">{{ Lang.get('ticket.ticket_details') }}</h2>
+
+            <div class="sp-collapsible sp-flex lg:sp-hidden">
+                <h4>{{ Lang.get('ticket.ticket_details') }}</h4>
+                <div class="sp-chevron print:sp-hidden">
+                    <i class="fas fa-chevron-up" aria-hidden="true"></i>
+                </div>
+            </div>
+
+            <div class="sp-hidden lg:sp-block print:sp-block">
+                {% include 'frontend.' ~ template ~ '.ticket.ticket_details' %}
+
+                {% if customfields is not empty %}
+                    {% include 'frontend.' ~ template ~ '.ticket.ticket_custom_fields' %}
+                {% endif %}
+            </div>
+        </div>
+
+        {{ View.fireHook('frontend.sidebar_end') }}
+    </div>
+{% endblock %}
+
+{% block precontent %}
+    <div class="sp-ticket-update sp-alert sp-alert-success sp-alert-sticky sp-hidden">
+        <div class="sp-container sp-mx-auto">
+            {{ Lang.get('messages.success_updated', {'item': mb_strtolower(Lang.choice('ticket.ticket', 1), 'UTF-8')}) }}
+        </div>
+    </div>
+    <div class="sp-ticket-update sp-alert sp-alert-error sp-alert-sticky sp-hidden">
+        <div class="sp-container sp-mx-auto">
+            {{ Lang.get('messages.error_updated', {'item': mb_strtolower(Lang.choice('ticket.ticket', 1), 'UTF-8')}) }}
+        </div>
+    </div>
+
+    <div class="sp-ticket-reply sp-alert sp-alert-success sp-alert-sticky sp-hidden">
+        <div class="sp-container sp-mx-auto">
+            {{ Lang.get('messages.success_updated', {'item': mb_strtolower(Lang.choice('ticket.ticket', 1), 'UTF-8')}) }}
+        </div>
+    </div>
+    <div class="sp-ticket-reply sp-alert sp-alert-error sp-alert-sticky sp-hidden">
+        <div class="sp-container sp-mx-auto">
+            {{ Lang.get('messages.error_updated', {'item': mb_strtolower(Lang.choice('ticket.ticket', 1), 'UTF-8')}) }}
+        </div>
+    </div>
+    <div class="sp-ticket-custom sp-alert sp-alert-error sp-alert-sticky sp-hidden">
+        <div class="sp-container sp-mx-auto"></div>
+    </div>
+    <div class="attachment sp-alert sp-alert-error sp-alert-sticky sp-hidden">
+        <div class="sp-container sp-mx-auto"></div>
+    </div>
+{% endblock %}
+
+{% block content %}
+
+    {% if download %}
+        <div class="sp-alert">
+            <i class="fas fa-times sp-alert-close"></i>
+            <strong>{{ Lang.get('ticket.downloading') }}</strong><br />
+            {{ Lang.get('ticket.downloading_desc', {'href': download.direct_frontend_url|e})|raw }}
+        </div>
+    {% endif %}
+
+    {% if ticket.locked == 1 %}
+        <div class="sp-ticket-locked sp-alert sp-alert-error">
+            {{ Lang.get('ticket.error_ticket_locked') }}
+        </div>
+    {% endif %}
+
+    {% if feedbackToken is not null %}
+        <div class="sp-feedback sp-alert sp-text-center">
+            <p class="sp-mt-0 sp-mb-3">{{ Lang.get('ticket.feedback_desc') }}</p>
+
+            <div class="sp-flex sp-flex-wrap">
+                <div class="sp-w-full sm:sp-w-1/3">
+                    <a href="{{ route('ticket.frontend.ticket.feedback', [ ticket.number, feedbackToken ]) }}?rating=1">
+                        <img class="sp-inline" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAMAAAC7IEhfAAABqlBMVEUAAAAuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEuzHEeM3AYAAAAjXRSTlMAAQIDBAUGBwgJCgsMDg8QERITFBUWFxgaGxwdHh8gIiQmKSorLC4vMDIzNDY4OTo8Pj9BQ0RFR0lKS0xOT1RVVldYWVtcXV5hYmNmaG9zdHV4fH5/hYiLjo+UlZeYmp6gpaaoqqutr7C1t7q8vsHDxcfIzM7P0dPV19na3ODi5Obo6evt7/Hz9ff5+/3xUOGfAAACRklEQVQYGYXBiSOTYQDH8d+z7Z0iYpPpkhrpPuhS6dKlRBedohKx7kQpraKY7fs/9zzvsA2tz0cFvH3dbzJYk73Hy/VPdQPke3/YaDWxUZabOqgVTCfOrzv7akrDayvj18dwnq5RIe8V1qt65VT1Ys3ElK/0CzDZpEKRZ0A6rpzQZ+BxQCucBtK1WmRGgA6tpn4WZkq1oB3o1OrqgGFlVWagX5ZpaIlokWloicg6ARyVrx9+BiWFx4CLygqPAVdkPYTpgKwo0CyrByciXw9OtaR1wClZt2HCyEritMiXxDkm6yZMSTKzsF9OAqdBvgROk6y1QEzaCpmgnEasMSNfI9a4kTME16Q2eK6sxkSyJ6wFjYlkT1i+VngpPYBzKq4G5qW3sFPFeYCnKdik4gxQpnmo1n8AVfoBG1WcAdbpA8RVXAgI6wm0ybf+zUBQeZon2+WLQMboAvTJdxfOKMfLQEhOM7yWtsOckdMGyYCWXIXv8vXBDSmQhrickjT0atGmDJyR4wF1kh5AQr7LwP2gfLtTMBWQ0w4zRtJWoEGOGQamr26piB4YAdIxOV4KOuSMwoSRExwkZ3abfF2Q8uRsBm7JZ86mWfCiTL4dwCVl3QKOKMs7OZiC8a6Ysirm4KNRVmAC2K8lRksqvkI6qkVl00CnVorPAbuUs+E3MBxVIa8bq1X5yr9h3StXTuh8CsjsUSGvDyfRVhs2Uqjq0KMM1qdqrbD3O8vNdxitwrRMku9PZ1j/Er08lML3rrveqDivrKq8xGi5v+9pCmPJArjSAAAAAElFTkSuQmCC" alt="{{ Lang.get('ticket.good_satisfied') }}">
+                        <div class="sp-mt-1 sp-font-semibold">{{ Lang.get('ticket.good_satisfied') }}</div>
+                    </a>
+                </div>
+                <div class="sp-w-full sp-mt-3 sm:sp-w-1/3 sm:sp-mt-0">
+                    <a href="{{ route('ticket.frontend.ticket.feedback', [ ticket.number, feedbackToken ]) }}?rating=2">
+                        <img class="sp-inline" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAMAAAC7IEhfAAABmFBMVEUAAADxxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/xxA/4+wrwAAAAh3RSTlMAAQIDBAUGBwgJCgsMDQ4PERITFBUWFxgaGxwdHyAkJikqKywuLzAzNDY4Ojw+P0FDREVHSUpMTk9SVFZXWFlcXV5iY2Zob3BzdHV4fH6ChYaIiYuPlJWXmJqeoKWmqK2vsLK1t7q8vsHDxcfIzM7P0dPV19na3ODi5Obo6evt7/Hz9ff5+/36/rmZAAACCUlEQVQYGYXBCUNMUQCG4e9M3aFFNU2apIYpoVBZIkWIKNkiVKJQ2SMiad/m/dvOuVNqVs+jJF5j3/s41uzA+RJlVfuCvT6dMcokMkGquVNKY3pwFu83VhYGC8pit6ZxRvcrmTeFNRXVrtAA1nJEexX+AGYblKz8JbAV067878DzgNJcAraqtMO8BbqVSXQNlgu1rQvoUWa1wLgSyuIwIsvUtYT1T7S1WtYF4Kx8I7CQJyk4DdxQgnkDPJb1FJYCssJAs6yHOBXydeI0SCoGLsq6BzNG1jzOOflGce7IugtzkswaNMmZxGmQ7wHOZVkFQESqgXienHqsb0a+MNZKUM4Y3JTa4ZUS6ifnHwW1rWpsYfiAfG3wWhqETuVWCZvSBzim3DzA0xxUKzcDFGkTKvQfQEh/4JByM0CxPkNMueUDQQ1DuxICXgojXznEja7CkHwdpFqNyGmGd9IRWDdyFknTK2cIbkuBLYjJ6SDVWkSWB9RKGoRJ+QJeCiOnC5aNpBqgTtl5G9AtZwJmjLLqhQ1PzmGgX9kcBa4poR9oVWal6/DFKCEwAzQpk9KfsBXWjqIloEfpYuvAce06uAKMh5XM68Nq014lv7CelGhX/pUNIH5CybwhnMn2qqCR8kOnn8WxvlYozcnfpNrsNsrAtMyy12pPUNmEr49t4PvYFzXKzSsKlewzSvUXTrn3Jn1lbwAAAAAASUVORK5CYII=" alt="{{ Lang.get('ticket.im_not_sure') }}">
+                        <div class="sp-mt-1 sp-font-semibold">{{ Lang.get('ticket.im_not_sure') }}</div>
+                    </a>
+                </div>
+                <div class="sp-w-full sp-mt-3 sm:sp-w-1/3 sm:sp-mt-0">
+                    <a href="{{ route('ticket.frontend.ticket.feedback', [ ticket.number, feedbackToken ]) }}?rating=0">
+                        <img class="sp-inline" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAMAAAC7IEhfAAABpFBMVEUAAADnTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDw8vlXlAAAAi3RSTlMAAQIDBAUGBwgJCgsMDQ4PERITFBUWFxgaGxwdHh8gJCYpKissLi8wMzQ2ODo8PT4/QUNERUZHSUpMTk9QUlZXWFlbXF1eYmNmaG9zdHV4fH6ChYiJi4+UlZeYmpudnqClpqitr7C1t7q8vsHDxcfIzM7P0dPV19na3N7g4uTm6Onr7e/x8/X3+fv9/9BgVAAAAkNJREFUGBmFwYlDi2EAx/Hfs/a+UUmtlLPYcuXMGbkSURJCyC20co4ICRVb7ftPe553W9tq5vNREa994FUaa+rmsVr9U8tjCr09YFRK8xjLTe/VCqYP59f19qYqf3Vd9HIC58kqFfPGscZblVd/E2uuWYWqPgNTO1Qs8hRYjCov/Am4F9IKJ4HF9coxL4FeldL6B+aqlNUN9Km0FuC5MurS8EiWiXVElGNiHRFZx4HDCjyCnxWS/ARwXhl+Argo6w7MhmQ1AAdlDeFEFBjCaZRUA5yQdQ0mjawZnA4FZnCOyLoK05LMH9gjJ44TUyCOs0PWaqBZ2gLpCjltWAmjQBvWRyNnFC5JXfBMGW3xmSFfWW3xmSFfgU54IQ3DGZXXBAvSa9iu8jzA0zRsVHkGqNYCNOo/gHr9gA0qzwA1egdR5YXab00mv492r1FeGPB1H7q0ZP88WcO+ciKQNjoHI8oyd8j72aSsgzAhbYWkUcZDYGEw1rz5RAJI1iljBPql0CJEFTgFPKlU4GgaPhs5HtAiaRjicrwUPFBOFOiU0w1zRtIWICbrGMyFtaQfpmR5KeiVMwaTRtIN6FFeJeBJugIpT84mYFBS47eJsAqcTvVL2gb0KGMQOKTS1ibhvVFGaBLYo1LWfoHFBuVUzwJ9WimaBHYqb9088LxBxbwBrE4Vqv2KdbtWeeGzKSC9S8W8EZx413rfSOH6fXfTWB8atcLu7yy30GtUgumYotDvPl//0nBhNEXgzUCrUXledX1tpdFyfwF8RgXXQ7P1gQAAAABJRU5ErkJggg==" alt="{{ Lang.get('ticket.bad_not_satisfied') }}">
+                        <div class="sp-mt-1 sp-font-semibold">{{ Lang.get('ticket.bad_not_satisfied') }}</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    {% if ticket.user.isAscendingReplyOrder() %}
+        {% include 'frontend.' ~ template ~ '.ticket.ticket_messages' %}
+    {% endif %}
+
+    {% if ticket.locked == 0 %}
+        <div class="add-reply {% if ticket.user.isAscendingReplyOrder() %}sp-mt-6{% else %}sp-mb-6{% endif %}">
+            {% include 'frontend.' ~ template ~ '.ticket.forms.message' %}
+        </div>
+    {% endif %}
+
+    {% if ticket.user.isDescendingReplyOrder() %}
+        {% include 'frontend.' ~ template ~ '.ticket.ticket_messages' %}
+    {% endif %}
+
+{% endblock %}
+
+{% block scripts_footer %}
+    {% if jsValidator|default is not empty %}
+        {{ jsValidator|raw }}
+    {% endif %}
+    {% if jsValidatorFields|default is not empty %}
+        {{ jsValidatorFields|raw }}
+    {% endif %}
+
+    <!-- Redactor -->
+    <script src="{{ asset_rev('resources/assets/libs/editor.min.js') }}"></script>
+    <script src="{{ asset_rev('resources/assets/general/js/editor_config.js') }}"></script>
+
+    <!-- Attachments -->
+    <script src="{{ asset_rev('resources/assets/libs/fileupload/js/jquery.fileupload.min.js') }}"></script>
+    <script type="text/javascript">
+        new FileUpload();
+    </script>
+
+    <!-- Attachment previews -->
+    <script src="{{ asset_rev('resources/assets/libs/att.preview/js/att.preview.min.js') }}"></script>
+
+    <!-- Custom fields -->
+    <script src="{{ asset_rev('resources/assets/general/js/customfields.js') }}"></script>
+
+    <script type="text/javascript">
+        var ticketNumber = "{{ ticket.number }}",
+            closedStatusId = "{{ Config.get('settings.default_resolved_status') }}",
+            descReplyOrder = {% if ticket.user.isDescendingReplyOrder() %}true{% else %}false{% endif %};
+    </script>
+
+    <script src="{{ asset_rev('resources/assets/frontend/js/ticket.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% if not related.isEmpty() %}
+    <ul class="sp-list-outside">
+        {% for article in related %}
+            {% if type is empty %}
+                {# This is needed if we don't have a single type, for example when showing related articles when submitting a ticket #}
+                {% set custom_type = true %}
+                {% set type = article.types.first() %}
+            {% endif %}
+            <li>
+                <a {% if newWindow is defined and newWindow %}target="_blank"{% endif %} href='{{ article.url(type) }}'>
+                    {{ article.title }}
+                </a>
+            </li>
+            {% if custom_type is not empty and custom_type %}
+                {# We need to clear it so it doesn't get used for the following article #}
+                {% set type = null %}
+            {% endif %}
+        {% endfor %}
+    </ul>
+{% endif %}

@@ -1,0 +1,84 @@
+{% extends parent_template %}
+
+{% block title %}{{ Lang.get('user.profile') }}{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+    {{ Lang.get('user.profile') }}
+{% endblock %}
+
+{% block content %}
+
+    {{ form_model(record, {'route': 'user.profile.update', 'method': 'PUT', 'files': true, 'class': 'validate'}) }}
+
+        {% include 'frontend.' ~ template ~ '.user.forms.user_profile' %}
+
+        <div class="sp-form-row">
+            {{ form_label('template_mode', Lang.get('core.template_mode')) }}
+            <div class="sp-input-container">
+                {{ form_select('template_mode',
+                    {1: Lang.get('core.light_mode'), 2: Lang.get('core.dark_mode')},
+                    record.template_mode is empty ? Config.get('settings.frontend_template_mode') : record.template_mode
+                ) }}
+            </div>
+        </div>
+
+        {% include 'frontend.' ~ template ~ '.user.forms.organisation' %}
+
+        {% include 'frontend.' ~ template ~ '.forms.custom_fields' %}
+
+        <div class="sp-form-button">
+            {{ form_submit(Lang.get('general.save')) }}
+        </div>
+
+    {{ form_close() }}
+
+    <form id="leaveOrganisation" action="{{ route('user.organisation.leaveOrganisation') }}" method="POST"></form>
+
+{% endblock %}
+
+{% block scripts_footer %}
+    <!-- Redactor -->
+    <script src="{{ asset_rev('resources/assets/libs/editor.min.js') }}"></script>
+    <script src="{{ asset_rev('resources/assets/general/js/editor_config.js') }}"></script>
+
+    <!-- Custom fields -->
+    <script src="{{ asset_rev('resources/assets/general/js/customfields.js') }}"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            // Enable hide/show password toggle
+            callHideShowPassword();
+
+            // Date picker
+            $('.datepicker').datepicker();
+
+            // Leave organisation button for managers and users of an organisation
+            $('.leave-organisation').on('click', function() {
+                var params = {
+                    translationKeys: {
+                        title: '{{ Lang.get('messages.leave_record', {'record': Lang.choice('user.organisation', 1)}) }}',
+                        warning: '{{ Lang.get('messages.leave_record_warn', {'record': Lang.choice('user.organisation', 1) }) }}',
+                        confirmButton: '{{ Lang.get('general.yes') }}',
+                        cancelButton: '{{ Lang.get('general.no') }}'
+                    }
+                };
+                (new deleteAlert(params))
+                    .fireDefault(Lang.choice('user.organisation', 1))
+                    .then(function (result) {
+                        if (result.value) {
+                            var input = $("<input>").attr("type", "hidden")
+                                .attr("name", "_token")
+                                .val($('meta[name=csrf_token]').prop('content'));
+
+                            $('form#leaveOrganisation').append($(input)).trigger('submit');
+                        }
+                    });
+            });
+        });
+    </script>
+
+    {% if jsValidator|default is not empty %}
+        {{ jsValidator|raw }}
+    {% endif %}
+{% endblock %}

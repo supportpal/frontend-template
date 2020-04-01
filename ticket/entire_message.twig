@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="robots" content="noindex" />
+
+    <title>{{ ticket.subject }}</title>
+
+    {% include 'frontend.' ~ template ~ '.head_common' %}
+
+    {{ View.fireHook('frontend.head') }}
+</head>
+
+<body class="{{ get_template_mode(false) }} sp-bg-secondary sp-text-primary print:sp-bg-primary" data-disable-pace>
+
+    {{ View.fireHook('frontend.body_start') }}
+
+    <div class="xs:sp-px-6 print:sp-p-0">
+        <div class="sp-mx-auto sp-mt-6 xs:sp-mb-6">
+            {{ View.fireHook('frontend.wrapper_start') }}
+
+            <h2 class="sp-ml-4 xs:sp-ml-0">{{ ticket.subject }}</h2>
+
+            <div class="sp-content sp-bg-primary xs:sp-rounded">
+                {{ View.fireHook('frontend.content_start') }}
+
+                {% include 'frontend.' ~ template ~ '.ticket.message' %}
+
+                {{ View.fireHook('frontend.content_end') }}
+            </div>
+
+            {{ View.fireHook('frontend.wrapper_end') }}
+        </div>
+    </div>
+
+    {% include 'frontend.' ~ template ~ '.footer_common' %}
+
+    <!-- Attachments -->
+    <script src="{{ asset_rev('resources/assets/libs/fileupload/js/jquery.fileupload.min.js') }}"></script>
+
+    <!-- Attachment previews -->
+    <script src="{{ asset_rev('resources/assets/libs/att.preview/js/att.preview.min.js') }}"></script>
+
+    <script type="text/javascript">
+        new FileUpload();
+
+        $(document).ready(function() {
+            // Open links in a new window/tab. Needs rel="noopener" due to
+            // https://www.jitbit.com/alexblog/256-targetblank---the-most-underestimated-vulnerability-ever/
+            $('.sp-message-text a').attr('target', '_blank').attr('rel', 'noopener');
+
+            // Load attachment previews
+            App.attachments.loadPreviews($('.sp-message'));
+        });
+    </script>
+
+    {{ View.fireHook('frontend.body_end') }}
+
+</body>
+
+</html>

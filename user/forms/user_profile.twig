@@ -1,0 +1,112 @@
+    <div class="sp-form-row">
+        {{ form_label('firstname', Lang.get('user.firstname')) }}
+        <div class="sp-input-container">
+            {{ form_text('firstname', null, record.exists ? {} : {'autofocus': 'autofocus'}) }}
+        </div>
+    </div>
+
+    <div class="sp-form-row">
+        {{ form_label('lastname', Lang.get('user.lastname')) }}
+        <div class="sp-input-container">
+            {{ form_text('lastname') }}
+        </div>
+    </div>
+
+    <div class="sp-form-row">
+        {{ form_label('email', Lang.get('general.email')) }}
+        <div class="sp-input-container">
+            {% set emailAttributes = {'size': 35} %}
+            {% if auth_check() and auth_user().loggedInViaSSO() %}
+                {% set emailAttributes = emailAttributes|merge({'readonly': 'readonly'}) %}
+            {% endif %}
+            {{ form_email('email', record.email, emailAttributes) }}
+
+            {% if emailChange %}
+                <div class="sp-alert sp-alert-warning sp-alert-bottom">
+                    {{ Lang.get('user.updating_email_address', {'email': emailChange.new_email}) }}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    {% if not record.exists or (auth_user().password is not empty and not auth_user().loggedInViaSSO()) %}
+        <div class="sp-form-row">
+            {{ form_label('password', Lang.get('general.password')) }}
+            <div class="sp-input-container">
+                {% if not record.exists %}
+                    {{ form_password('password', {'size': 20, 'autocomplete': 'new-password'}) }}
+                {% else %}
+                    <a href="{{ route('user.change_password') }}" class="sp-button">
+                        {{ Lang.get('user.change_password') }}
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
+
+    {% if not record.exists %}
+        <div class="sp-form-row">
+            {{ form_label('password_confirmation', Lang.get('user.confirm_password')) }}
+            <div class="sp-input-container">
+                {{ form_password('password_confirmation', {'size': 20, 'autocomplete': 'new-password'}) }}
+            </div>
+        </div>
+    {% endif %}
+
+    {% if record.exists and record.password is not empty %}
+        <div class="sp-form-row">
+            {{ form_label('twofa_enabled', Lang.get('user.two_fa_enabled')) }}
+            <div class="sp-input-container">
+                {% if record.twofa_enabled %}
+                    <div class="twofa-enabled sp-text-green-600 sp-font-bold">{{ Lang.get('general.yes') }}</div>
+                {% else %}
+                    <div class="twofa-enabled sp-text-red-600 sp-font-bold">{{ Lang.get('general.no') }}</div>
+                {% endif %}
+                {% if not record.twofa_enabled or (record.id == auth_user().id and not Config.get('settings.force_2fa_users', 0)) %}
+                    <div class="sp-mt-3">
+                        <a class="sp-button" href="{{ route('user.twofa') }}">{{ Lang.get('general.manage') }}</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
+
+    <div class="sp-form-row">
+        {{ form_label('country', Lang.get('user.country')) }}
+        <div class="sp-input-container">
+            {{ form_select('country', countries(),
+                organisation_add is defined and organisation.country|default is not empty ? organisation.country : 
+                record.country|default is not empty ? record.country : Config.get('settings.default_country')) }}
+        </div>
+    </div>
+
+    {# Check whether we should allow users to change their default language #}
+    {% if Config.get('settings.language_frontend_toggle') %}
+        <div class="sp-form-row">
+            {{ form_label('language_code', Lang.choice('general.language', 1)) }}
+            <div class="sp-input-container">
+                {{ form_select('language_code', languages,
+                    organisation_add is defined and organisation.language_code|default is not empty ? organisation.language_code
+                    : record.language_code|default is not empty ? record.language_code : LanguageFactory.getUserDefault()) }}
+            </div>
+        </div>
+    {% endif %}
+
+    <div class="sp-form-row">
+        {{ form_label('timezone', Lang.get('general.timezone')) }}
+        <div class="sp-input-container">
+            {{ form_select('timezone', timezones(),
+                organisation_add is defined and organisation.timezone|default is not empty ? organisation.timezone
+                : record|default is not empty and record.timezone|default is not empty ? record.timezone : Config.get('settings.default_timezone')) }}
+        </div>
+    </div>
+
+    <div class="sp-form-row">
+        {{ form_label('avatar', Lang.get('user.avatar')) }}
+        <div class="sp-input-container">
+            {% if record.avatar_url %}
+                <img class="sp-avatar sp-mb-3" src="{{ record.avatar_url }}" />
+            {% endif %}
+            {{ form_file('avatar') }}
+        </div>
+    </div>

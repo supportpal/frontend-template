@@ -1,0 +1,40 @@
+{% extends parent_template %}
+
+{% block title %}{{ Lang.get('user.login') }}{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+    {{ Lang.get('user.login') }}
+{% endblock %}
+
+{% block content %}
+
+    <h2>{{ Lang.get('user.two_fa') }}</h2>
+
+    {{ form_open({'route': 'user.login.twofa', 'method': 'POST', 'class': 'validate sp-w-full sp-m-auto md:sp-w-2/3 xl:sp-w-1/2'}) }}
+
+        {{ form_hidden('email', email) }}
+        {{ form_hidden('twofa_token', twofa_token) }}
+        {{ form_hidden('back', back) }}
+        {{ form_hidden('remember', remember) }}
+
+        <div class="sp-form-row sp-form-full sp-mb-4">
+            {{ form_label('twofa_code', Lang.get('user.two_fa_code')) }}
+            <div class="sp-input-container">
+                {{ form_text('twofa_code', null, {'placeholder': Lang.get('user.two_fa_code'), 'autofocus': 'autofocus'}) }}
+            </div>
+        </div>
+
+        <div class="sp-form-button">
+            {{ form_submit(Lang.get('user.login')) }}
+        </div>
+
+    {{ form_close() }}
+
+{% endblock %}
+
+{% block scripts_footer %}
+    {% if jsValidator|default is not empty %}
+        {{ jsValidator|raw }}
+    {% endif %}
+{% endblock %}
