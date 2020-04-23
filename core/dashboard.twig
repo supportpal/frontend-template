@@ -36,10 +36,9 @@
                         {% if isModuleEnabled('Selfservice') and not types.isEmpty() %}sp-mb-6{% endif %}">
                 <a href="{{ route('ticket.frontend.ticket.createStep1') }}"
                    class="sp-w-full sp-px-6 sp-py-3 sp-m-3 sp-bg-secondary sp-rounded sp-shadow lg:sp-w-1/2">
-                    <div class="sp-dashboard-section sp-flex">
-                        <div class="sp-flex-none sp-mr-6">
-                            <img src="{{ asset_rev('resources/assets/frontend/icons/submit.png') }}" class="sp-max-w-md xs:sp-max-w-lg"
-                                 alt="{{ Lang.get('core.submit_ticket') }}" />
+                    <div class="sp-dashboard-section sp-flex sp-items-center">
+                        <div class="sp-icon sp-flex-none sp-mr-6">
+                            <i class="fas fa-fw fa-envelope-open-text sp-text-5xl" alt="{{ Lang.get('core.submit_ticket') }}"></i>
                         </div>
                         <div class="sp-flex-grow sp-py-1">
                             <h4 class="sp-text-xl">{{ Lang.get('core.submit_ticket') }}</h4>
@@ -50,10 +49,9 @@
                 {% if not auth_check() and Config.get('channel.web.settings.unauthenticated_users') %}
                     <a href="{{ route('ticket.frontend.track') }}"
                        class="sp-w-full sp-px-6 sp-py-3 sp-m-3 sp-bg-secondary sp-rounded sp-shadow lg:sp-w-1/2">
-                        <div class="sp-dashboard-section sp-flex">
-                            <div class="sp-flex-none sp-mr-6">
-                                <img src="{{ asset_rev('resources/assets/frontend/icons/binoculars.png') }}" class="sp-max-w-md xs:sp-max-w-lg"
-                                     alt="{{ Lang.get('core.track_ticket') }}" />
+                        <div class="sp-dashboard-section sp-flex sp-items-center">
+                            <div class="sp-icon sp-flex-none sp-mr-6">
+                                <i class="fas fa-fw fa-binoculars sp-text-5xl" alt="{{ Lang.get('core.track_ticket') }}"></i>
                             </div>
                             <div class="sp-flex-grow sp-py-1">
                                 <h4 class="sp-text-xl">{{ Lang.get('core.track_ticket') }}</h4>
@@ -64,10 +62,9 @@
                 {% elseif auth_check() %}
                     <a href="{{ route('ticket.frontend.ticket.index') }}"
                        class="sp-w-full sp-px-6 sp-py-3 sp-m-3 sp-bg-secondary sp-rounded sp-shadow lg:sp-w-1/2">
-                        <div class="sp-dashboard-section sp-flex">
-                            <div class="sp-flex-none sp-mr-6">
-                                <img src="{{ asset_rev('resources/assets/frontend/icons/binoculars.png') }}" class="sp-max-w-md xs:sp-max-w-lg"
-                                     alt="{{ Lang.get('core.my_tickets') }}" />
+                        <div class="sp-dashboard-section sp-flex sp-items-center">
+                            <div class="sp-icon sp-flex-none sp-mr-6">
+                                <i class="fas fa-fw fa-binoculars sp-text-5xl" alt="{{ Lang.get('core.track_ticket') }}"></i>
                             </div>
                             <div class="sp-flex-grow sp-py-1">
                                 <h4 class="sp-text-xl">{{ Lang.get('core.my_tickets') }}</h4>
@@ -85,10 +82,10 @@
 
                 <div class="sp-dashboard-section" id="sp-selfservice-{{ type.id }}">
                     <div class="{% if isCollapsible %}sp-collapsible{% endif %}">
-                        <div class="sp-flex">
-                            <div class="sp-flex-none sp-mr-6">
+                        <div class="sp-flex sp-items-center">
+                            <div class="sp-icon sp-flex-none sp-mr-6">
                                 <a href="{{ type.url }}">
-                                    <img src="data:image/jpeg;base64, {{ type.icon }}" class="sp-max-w-md xs:sp-max-w-lg" alt="{{ type.name }}" />
+                                    <i class="fas fa-fw {{ type.icon }} sp-text-5xl" alt="{{ type.name }}"></i>
                                 </a>
                             </div>
                             <div class="sp-flex-grow sp-py-1">
