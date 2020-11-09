@@ -71,17 +71,7 @@
                         <span class="sp-bg-primary sp-px-4">{{ Lang.get('general.or') }}</span>
                     </div>
 
-                    {% for provider, metadata in all_providers %}
-                        {% if socialite_providers.contains('name', provider) %}
-                            <a href="{{ route('user.oauth_redirect', {'provider': provider}) }}"
-                               class="sp-social-login sp-px-4 sp-m-3/2" style="background-color: {{ metadata.colour }};">
-                                <span class="sp-mr-1">
-                                    <i class="fab fa-{{ provider }} fa-fw"></i>
-                                </span>
-                                {{ Lang.get('user.login_via', {'provider': metadata.name }) }}
-                            </a><br />
-                        {% endif %}
-                    {% endfor %}
+                    {% include 'frontend.' ~ template ~ '.user.social_login_options' with {'new_line': true} %}
                 {% endif %}
             </div>
 

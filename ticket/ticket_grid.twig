@@ -9,17 +9,7 @@
 
 {% block content %}
 
-    <div class="sp-alert md:sp-block sp-hidden">
-        <a href="{{ route('ticket.frontend.ticket.createStep1') }}">
-            <i class="fas fa-plus"></i>&nbsp;
-            {{ Lang.get('core.submit_ticket') }}
-        </a>&nbsp;&nbsp;&nbsp;
-        <a class="sp-filter-results">
-            <i class="fas fa-filter"></i>&nbsp; {{ Lang.get('general.filter_results') }}
-        </a>
-    </div>
-
-    <div class="sp-filter-results sp-hidden">
+    <div class="sp-filter-results sp-mx-6 sp-hidden">
         <h3>{{ Lang.get('general.filter_results') }}</h3>
 
         <div class="sp-table">
@@ -41,13 +31,6 @@
                 <label>{{ Lang.choice('ticket.department', 1) }}:</label>
                 <div>
                     {{ form_select('sSearch_2', {'-1': Lang.get('general.select_value')} + departments.pluck('name', 'id').all()) }}<!--
-                    -->{{ form_button('<i class="fas fa-fw fa-times"></i>', {'class': 'reset-filter'}) }}
-                </div>
-            </div>
-            <div class="sp-table-row">
-                <label>{{ Lang.choice('general.status', 1) }}:</label>
-                <div>
-                    {{ form_select('sSearch_3', {'-1': Lang.get('general.select_value')} + statuses.pluck('name', 'id').all()) }}<!--
                     -->{{ form_button('<i class="fas fa-fw fa-times"></i>', {'class': 'reset-filter'}) }}
                 </div>
             </div>
@@ -80,6 +63,8 @@
                 </div>
             </div>
         </div>
+
+        {{ form_hidden('sSearch_6') }}
     </div>
 
 	{{ table.render()|raw }}
@@ -92,12 +77,5 @@
 
     <script type="text/javascript" src="{{ asset_rev('resources/assets/general/js/queryfiltering.js') }}"></script>
 
-    <script type="text/javascript">
-        $(document).ready(function() {
-            // Toggle show/hide of the filters area
-            $('a.sp-filter-results').on('click', function() {
-                $('div.sp-filter-results').toggleClass('sp-hidden');
-            });
-        });
-    </script>
+    <script type="text/javascript" src="{{ asset_rev('resources/assets/frontend/js/ticketgrid.js') }}"></script>
 {% endblock %}

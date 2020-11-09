@@ -55,7 +55,7 @@
             </li>
         {% endif %}
         <li>
-            <a href="{{ route('user.logout') }}">
+            <a class="logout-link" data-url="{{ route('user.logout') }}" data-method="post">
                 {{ Lang.get('user.logout') }}
             </a>
         </li>
