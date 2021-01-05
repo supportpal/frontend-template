@@ -10,7 +10,7 @@
     <div class="sp-form-row {% if customfield.type == 9 %}sp-form-full{% endif %} sp-form-customfields
                 {% if customfield.depends_on_option_id and not customfield.parent_selected %}sp-hidden{% endif %}"
          data-field="{{ customfield.id }}"
-         data-locked="{{ customfield.value is not empty and czustomfield.locked }}"
+         data-locked="{{ customfield.value is not empty and customfield.locked }}"
          data-dependent-children="{{ customfield.children is not empty ? customfield.children|json_encode : "[]" }}"
          data-depends-on-option="{{ customfield.depends_on_option_id }}">
         
