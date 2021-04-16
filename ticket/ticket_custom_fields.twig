@@ -1,11 +1,15 @@
-<form class="sp-custom-fields sp-mt-3 validate">
+<form class="sp-custom-fields sp-mt-3 validate"
+      data-ajax="ajax"
+      method="POST"
+      action="{{ route('ticket.frontend.ticket.saveFields', {'number': ticket.number}) }}">
+
+    {{ form_hidden('token', Request.input('token')) }}
+
     {% include 'frontend.' ~ template ~ '.forms.custom_fields' %}
 
     {% if ticket.locked == 0 %}
         <div class="sp-form-button print:sp-hidden">
-            <button class="sp-customfields-save sp-button-submit" data-token="{{ Request.input('token', '') }}" type="button">
-                {{ Lang.get('general.save') }}
-            </button>
+            {{ form_submit(Lang.get('general.save')) }}
         </div>
     {% endif %}
 </form>

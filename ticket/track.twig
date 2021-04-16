@@ -13,12 +13,18 @@
 
 		<div class="sp-form-row">
 			{{ form_label('email', Lang.get('general.email')) }}
-			{{ form_email('email') }}
+			<div class="sp-input-container">
+				{{ form_email('email') }}
+			</div>
 		</div>
+
 		<div class="sp-form-row">
 			{{ form_label('number', Lang.get('ticket.ticket_number')) }}
-			{{ form_text('number') }}
+			<div class="sp-input-container">
+				{{ form_text('number') }}
+			</div>
 		</div>
+
 		<div class="sp-form-button">
 			{{ form_submit(Lang.get('ticket.view_ticket')) }}
 		</div>

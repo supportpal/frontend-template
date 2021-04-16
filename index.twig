@@ -15,7 +15,7 @@
     {% set route = Route.currentRouteName() %}
 </head>
 
-<body class="{{ get_template_mode(false) }} sp-bg-secondary sp-text-primary">
+<body class="{{ get_template_mode(false) }} sp-bg-secondary sp-text-primary print:sp-bg-primary">
 
     {{ View.fireHook('frontend.body_start') }}
 
@@ -27,8 +27,7 @@
             <div class="sp-search sp-absolute sp-hidden sp-flex sp-items-center sp-h-full sp-w-full sp--mt-2
                         sp-bg-primary sp-z-10 print:sp-hidden">
                 <div class="sp-flex-grow sp-w-full">
-                    <form name="search" action="{{ route('core.frontend.search') }}" method="post">
-                        <input type="hidden" name="_token" value="{{ csrf_token() }}" />
+                    <form name="search" action="{{ route('core.frontend.search') }}" method="get">
                         <input type="search" name="query" placeholder="{{ Lang.get('general.search') }}" />
                     </form>
                 </div>

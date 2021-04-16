@@ -1,13 +1,11 @@
 {% if not articles.isEmpty() %}
     <ul class="sp-article-list">
         {% for article in articles %}
-            {% if type|default is empty %}
-                {# article.categories is pre filtered to categories the user can view, while article.types is not #}
-                {% set type = article.categories.first().type %}
-            {% endif %}
+            {# article.categories is pre filtered to categories the user can view, while article.types is not #}
+            {% set type = article.categories.first().type %}
 
             <li data-slug="{{ article.slug }}">
-                <a href='{{ article.url(type) }}'>
+                <a href="{{ article.url(type) }}">
                     <h4>
                         {% if show_pinned|default is not empty and show_pinned and article.pinned %}
                             <span class="sp-float-left">

@@ -13,8 +13,7 @@
                     <div class="sp-mb-3/2 sp-font-semibold sp-text-lg xs:sp-text-xl sm:sp-mb-3 sm:sp-text-2xl lg:sp-text-3xl">
                         {{ Lang.get('core.how_can_we_help') }}
                     </div>
-                    <form name="search" action="{{ route('core.frontend.search') }}" method="post">
-                        <input type="hidden" name="_token" value="{{ csrf_token() }}" />
+                    <form name="search" action="{{ route('core.frontend.search') }}" method="get">
                         <input type="search" name="query" placeholder="{{ Lang.get('general.search') }}" />
                     </form>
                 </div>

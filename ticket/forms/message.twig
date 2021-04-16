@@ -1,4 +1,7 @@
-<form class="sp-message-form validate" data-ajax="ajax">
+<form class="sp-message-form validate"
+      action="{{ route('ticket.frontend.message.store') }}"
+      method="post"
+      data-ajax="ajax">
 
     {{ form_hidden('send_email_to_users', 1) }}
     {{ form_hidden('ticket_number', ticket.number) }}
@@ -35,7 +38,7 @@
                 </div>
             </div>
 
-            <div class="sp-redactor-rounded-t-none">
+            <div class="sp-redactor-rounded-t-none sp-validation-container">
                 {{ form_redactor('text') }}
             </div>
 

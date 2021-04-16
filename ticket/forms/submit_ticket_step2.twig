@@ -14,7 +14,7 @@
     <p class="sp-description">{{ Lang.get('ticket.select_department_desc') }}</p>
 
     {% for department in departments %}
-        <a class="sp-department sp-block sp-px-4 sp-py-3 sp-mt-3 sp-border sp-rounded"
+        <a class="sp-department sp-block sp-px-4 sp-py-3 sp-mt-3 sp-bg-secondary sp-border sp-rounded hover:sp-bg-tertiary"
            href="{{ route('ticket.frontend.ticket.createStep3', {'department': department.id}) }}">
             <h4>{{ department.frontend_name }}</h4>
             {% if department.description is not empty %}

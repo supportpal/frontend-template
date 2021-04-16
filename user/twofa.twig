@@ -30,27 +30,32 @@
         </div>
     </div>
 
-    <form method="post" action="{{ route('user.twofa') }}">
+    {{ form_open({'method': 'POST', 'route': 'user.twofa', 'class': 'validate'}) }}
         <input type="hidden" name="enable" value="{{ 1 - auth_user().twofa_enabled }}" />
         <input type="hidden" name="twofa_secret" value="{{ twofa_secret }}" />
         {{ csrf_field() }}
 
         {% if auth_user().twofa_enabled and not Config.get('settings.force_2fa_users') %}
-
             <div class="sp-form-row">
                 {{ form_label('twofa_code', Lang.get('user.verify_code')) }}
                 <div class="sp-input-container">
-                    {{ form_text('twofa_code') }}<br />
-                    {{ form_submit(Lang.get('user.verify_and_disable'), {'class': 'twofa-verify sp-mt-3'}) }}
+                    {{ form_text('twofa_code') }}
                     <div class="sp-description">{{ Lang.get('user.verify_code_desc') }}</div>
                 </div>
             </div>
 
+            <div class="sp-form-button">
+                {{ form_submit(Lang.get('user.verify_and_disable'), {'class': 'twofa-verify'}) }}
+            </div>
         {% elseif not auth_user().twofa_enabled %}
-
             {% include 'frontend.' ~ template ~ '.user.forms.twofa' %}
-
         {% endif %}
-    </form>
+    {{ form_close() }}
 
+{% endblock %}
+
+{% block scripts_footer %}
+    {% if jsValidator|default is not empty %}
+        {{ jsValidator|raw }}
+    {% endif %}
 {% endblock %}

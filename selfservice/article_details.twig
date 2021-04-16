@@ -7,9 +7,9 @@
             <i class="fas fa-folder sp-mr-1"></i>
             <ul class="sp-item-list">
                 {% for category in article.categories.sortBy('name') %}
-                    <li>
-                        <a href="{{ category.frontend_url }}">{{ category.name }}</a>
-                    </li>
+                    <li><!--
+                        --><a href="{{ category.frontend_url }}">{{ category.name }}</a><!--
+                    --></li>
                 {% endfor %}
             </ul>
         </li>
