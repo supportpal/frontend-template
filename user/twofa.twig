@@ -48,7 +48,7 @@
                 {{ form_submit(Lang.get('user.verify_and_disable'), {'class': 'twofa-verify'}) }}
             </div>
         {% elseif not auth_user().twofa_enabled %}
-            {% include 'frontend.' ~ template ~ '.user.forms.twofa' %}
+            {% include 'frontend.' ~ template ~ '.user.forms.twofa' with {'password': true} %}
         {% endif %}
     {{ form_close() }}
 

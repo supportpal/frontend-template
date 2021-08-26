@@ -74,10 +74,10 @@
     <div class="sp-form-row">
         {{ form_label('phone', Lang.choice('user.phone_number', 2)) }}
         <div class="sp-input-container">
-            {% include 'operator.' ~ template ~ '.user.forms.phone_number' with {'hide': true} %}
+            {% include 'frontend.' ~ template ~ '.user.forms.phone_number' with {'hide': true} %}
 
             {% for number in record.phonenumbers %}
-                {% include 'operator.' ~ template ~ '.user.forms.phone_number' %}
+                {% include 'frontend.' ~ template ~ '.user.forms.phone_number' %}
             {% endfor %}
 
             {{ form_button(Lang.get('general.add'), {'class': 'sp-add-number'}) }}
