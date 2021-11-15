@@ -2,6 +2,7 @@
 
 {% block meta %}
     <meta name="robots" content="noindex" />
+    <meta name="ticket-subject" content="{{ ticket.subject }}" />
     {% if download %}
         <meta http-equiv="refresh" content="2;{{ download.direct_frontend_url }}" />
     {% endif %}
@@ -69,6 +70,9 @@
     </div>
     <div class="attachment sp-alert sp-alert-error sp-alert-sticky sp-hidden">
         <div class="sp-container sp-mx-auto"></div>
+    </div>
+    <div class="sp-all-attachments sp-alert sp-alert-info sp-alert-sticky sp-hidden">
+        <div class="sp-container sp-mx-auto">{{ Lang.get('ticket.downloading') }}</div>
     </div>
 {% endblock %}
 
@@ -145,12 +149,10 @@
 
     <!-- Attachments -->
     <script src="{{ asset_rev('resources/assets/libs/fileupload/js/jquery.fileupload.min.js') }}"></script>
+    <script src="{{ asset_rev('resources/assets/libs/att.preview/js/att.preview.min.js') }}"></script>
     <script type="text/javascript">
         new FileUpload();
     </script>
-
-    <!-- Attachment previews -->
-    <script src="{{ asset_rev('resources/assets/libs/att.preview/js/att.preview.min.js') }}"></script>
 
     <!-- Custom fields -->
     <script src="{{ asset_rev('resources/assets/general/js/customfields.js') }}"></script>

@@ -19,6 +19,10 @@
         <div class="sp-mx-auto sp-mt-6 xs:sp-mb-6">
             {{ View.fireHook('frontend.wrapper_start') }}
 
+            <div class="sp-all-attachments sp-alert sp-alert-info sp-hidden">
+                {{ Lang.get('ticket.downloading') }}
+            </div>
+
             <h2 class="sp-ml-4 xs:sp-ml-0">{{ ticket.subject }}</h2>
 
             <div class="sp-content sp-bg-primary xs:sp-rounded">
@@ -51,6 +55,16 @@
 
             // Load attachment previews
             App.attachments.loadPreviews($('.sp-message'));
+
+            if (ZipFile.isSupported()) {
+                if ($('.sp-message').find('ul.sp-attachments li').length > 1) {
+                    $('.sp-message').find('.sp-download-all').show();
+                }
+            }
+
+            $('.sp-message').on('click', '.sp-download-all', function () {
+                (new ZipFile).create($(this).parents('.sp-message').find('.sp-attachments li'), $('title').text());
+            })
         });
     </script>
 
