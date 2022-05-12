@@ -9,7 +9,7 @@
 
 {% block content %}
 
-    {{ Lang.get('core.found_results', {'total': total}) }} '<strong>{{ Request.input('query') }}</strong>'.
+    {{ Lang.get('core.found_results', {'total': total}) }} '<strong>{{ term }}</strong>'.
 
     {% if total > 0 %}
         <hr />

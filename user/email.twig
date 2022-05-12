@@ -10,7 +10,6 @@
 {% endblock %}
 
 {% block content %}
-
     <h2>{{ Lang.choice('general.detail', 2) }}</h2>
 
     <div class="sp-mb-6 md:sp-p-6 md:sp-pb-0 md:sp-border md:sp-border-secondary md:sp-rounded">
@@ -100,7 +99,9 @@
     <div class="sp-email-content sp-p-6 sp-border sp-border-secondary sp-rounded sp-overflow-x-auto">
         {{ Purifier.clean(record.contents) }}
     </div>
+{% endblock %}
 
+{% block scripts_footer %}
     <script type="text/javascript">
         $(document).ready(function() {
             // Open links in a new window/tab. Needs rel="noopener" due to
@@ -108,5 +109,4 @@
             $('.sp-email-content a').attr('target', '_blank').attr('rel', 'noopener');
         });
     </script>
-
 {% endblock %}

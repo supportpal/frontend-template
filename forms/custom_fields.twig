@@ -101,7 +101,7 @@
                 {% endif %}
 
             {% elseif customfield.type == 9 %}
-                {{ form_redactor('customfield[' ~ customfield.id ~ ']', customfield.value is not null and not customfield.encrypted ? customfield.value : null,
+                {{ form_editor('customfield[' ~ customfield.id ~ ']', customfield.value is not null and not customfield.encrypted ? customfield.value : null,
                     customfield.value is not empty and customfield.locked ? {'rows': 1, 'class': 'sp-w-full', 'disabled': 'disabled'} : {'rows': 1, 'class': 'sp-w-full'}) }}
                 {% if customfield.value is not null and customfield.encrypted %}
                     <div class="sp-description">({{ Lang.get('general.only_enter_to_change') }})</div>

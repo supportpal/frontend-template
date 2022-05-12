@@ -31,7 +31,7 @@
     {% else %}
 
         {% if isModuleEnabled('Ticket') %}
-            <div class="sp-flex sp-flex-wrap sp--m-3 lg:sp-flex-no-wrap
+            <div class="sp-flex sp-flex-wrap sp--m-3 lg:sp-flex-nowrap
                         {% if isModuleEnabled('Selfservice') and not types.isEmpty() %}sp-mb-6{% endif %}">
                 <a href="{{ route('ticket.frontend.ticket.createStep1') }}"
                    class="sp-w-full sp-px-6 sp-py-3 sp-m-3 sp-bg-secondary sp-rounded sp-shadow lg:sp-w-1/2">
@@ -39,7 +39,7 @@
                         <div class="sp-icon sp-flex-none sp-mr-6">
                             <i class="fas fa-fw fa-envelope-open-text sp-text-5xl" alt="{{ Lang.get('core.submit_ticket') }}"></i>
                         </div>
-                        <div class="sp-flex-grow sp-py-1">
+                        <div class="sp-grow sp-py-1">
                             <h4 class="sp-text-xl">{{ Lang.get('core.submit_ticket') }}</h4>
                             <p class="sp-m-0 sp-text-secondary">{{ Lang.get('core.submit_ticket_desc') }}</p>
                         </div>
@@ -52,7 +52,7 @@
                             <div class="sp-icon sp-flex-none sp-mr-6">
                                 <i class="fas fa-fw fa-binoculars sp-text-5xl" alt="{{ Lang.get('core.track_ticket') }}"></i>
                             </div>
-                            <div class="sp-flex-grow sp-py-1">
+                            <div class="sp-grow sp-py-1">
                                 <h4 class="sp-text-xl">{{ Lang.get('core.track_ticket') }}</h4>
                                 <p class="sp-m-0 sp-text-secondary">{{ Lang.get('core.track_ticket_desc') }}</p>
                             </div>
@@ -65,7 +65,7 @@
                             <div class="sp-icon sp-flex-none sp-mr-6">
                                 <i class="fas fa-fw fa-binoculars sp-text-5xl" alt="{{ Lang.get('core.track_ticket') }}"></i>
                             </div>
-                            <div class="sp-flex-grow sp-py-1">
+                            <div class="sp-grow sp-py-1">
                                 <h4 class="sp-text-xl">{{ Lang.get('core.my_tickets') }}</h4>
                                 <p class="sp-m-0 sp-text-secondary">{{ Lang.get('core.my_tickets_desc') }}</p>
                             </div>
@@ -87,7 +87,7 @@
                                     <i class="fas fa-fw {{ type.icon }} sp-text-5xl" alt="{{ type.name }}"></i>
                                 </a>
                             </div>
-                            <div class="sp-flex-grow sp-py-1">
+                            <div class="sp-grow sp-py-1">
                                 <h4 class="sp-text-xl"><a href="{{ type.url }}">{{ type.name }}</a></h4>
                                 <p class="sp-m-0">{{ type.description }}</p>
                             </div>

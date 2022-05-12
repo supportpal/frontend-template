@@ -2,9 +2,12 @@
 <html>
 
 <head>
-    {% block meta %}{% endblock %}
+    {% set title = block('title') is defined ? block('title') : Lang.get('general.support_portal') %}
+    <title>{{ company }} - {{ title }}</title>
 
-    <title>{{ company }} - {% block title %}{{ Lang.get('general.support_portal') }}{% endblock %}</title>
+    {% block meta %}{% endblock %}
+    <meta property="og:title" content="{{ title }}" />
+    <meta property="og:image" content="{{ get_logo() }}" />
 
     {% include 'frontend.' ~ template ~ '.head_common' %}
 
@@ -26,7 +29,7 @@
 
             <div class="sp-search sp-absolute sp-hidden sp-flex sp-items-center sp-h-full sp-w-full sp--mt-2
                         sp-bg-primary sp-z-10 print:sp-hidden">
-                <div class="sp-flex-grow sp-w-full">
+                <div class="sp-grow sp-w-full">
                     <form name="search" action="{{ route('core.frontend.search') }}" method="get">
                         <input type="search" name="query" placeholder="{{ Lang.get('general.search') }}" />
                     </form>
@@ -39,7 +42,7 @@
             </div>
 
             <div class="sp-flex sp-items-center sp-h-full">
-                <div class="sp-flex-grow">
+                <div class="sp-grow">
                     <a href="{{ route('core.frontend.home') }}">
                         <img src="{{ get_logo(get_template_mode(false) == 'sp-theme-dark') }}" alt="{{ company }}"
                              class="sp-logo sp-inline {% if get_template_mode(false) == 'sp-theme-dark' %}print:sp-hidden{% endif %}" />
@@ -115,7 +118,7 @@
 
             <div class="sp-px-6 sp-mb-4 sp-leading-none xs:sp-px-0 xs:sp-mb-6 lg:sp-mb-8">
                 <h1 class="sp-hidden md:sp-block sp-mb-3 sp-text-3xl sp-font-normal print:sp-block">
-                    {{ block('title') }}
+                    {{ title }}
                 </h1>
 
                 <div class="sp-breadcrumb md:sp-text-sm print:sp-mb-6">
@@ -126,9 +129,9 @@
                 <hr class="sp-hidden sp-mx-0 print:sp-block" />
             </div>
 
-            <div class="sp-flex sp-flex-wrap-reverse sp-min-w-0 lg:sp-flex-no-wrap">
+            <div class="sp-flex sp-flex-wrap-reverse sp-min-w-0 lg:sp-flex-nowrap">
 
-                <div class="sp-content sp-flex-grow sp-w-full sp-overflow-hidden lg:sp-w-auto">
+                <div class="sp-content sp-grow sp-w-full sp-overflow-hidden lg:sp-w-auto">
 
                     {{ View.fireHook('frontend.content_start') }}
 
@@ -179,7 +182,7 @@
     <div class="sp-px-6 sp-mt-6 sp-border-t sp-border-tertiary print:sp-px-0">
         <div class="sp-container sp-py-6 sp-mx-auto print:sp-max-w-full">
             <div class="sp-flex sp-flex-wrap sp-items-center">
-                <div class="sp-flex-grow sp-w-full sp-mb-3 sm:sp-w-auto sm:sp-mb-0">
+                <div class="sp-grow sp-w-full sp-mb-3 sm:sp-w-auto sm:sp-mb-0">
                     <span class="sp-text-tertiary">
                         &copy; {{ company }}
                     </span>

@@ -1,12 +1,13 @@
 {% extends parent_template %}
 
 {% block meta %}
-    {% if article.keywords is not empty %}
-        <meta name="keywords" content="{{ article.keywords }}" />
-    {% endif %}
     {% if article.excerpt is not empty %}
         <meta name="description" content="{{ article.excerpt }}" />
+        <meta property="og:description" content="{{ article.excerpt }}" />
     {% endif %}
+
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="{{ article.frontendUrl(type) }}" />
 {% endblock %}
 
 {% block title %}{{ article.title }}{% endblock %}
@@ -173,7 +174,7 @@
         var commentRoute = "{{ route('selfservice.comment') }}";
     </script>
 
-    <!-- Redactor -->
+    <!-- WYSIWYG Editor -->
     <script src="{{ asset_rev('resources/assets/libs/editor.min.js') }}"></script>
     <script src="{{ asset_rev('resources/assets/general/js/editor_config.js') }}"></script>
 
