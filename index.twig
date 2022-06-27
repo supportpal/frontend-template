@@ -2,11 +2,11 @@
 <html>
 
 <head>
-    {% set title = block('title') is defined ? block('title') : Lang.get('general.support_portal') %}
-    <title>{{ company }} - {{ title }}</title>
+    {% set title = block('title') is defined ? block('title') : Lang.get('general.support_portal')|e %}
+    <title>{{ company }} - {{ title|raw }}</title>
 
     {% block meta %}{% endblock %}
-    <meta property="og:title" content="{{ title }}" />
+    <meta property="og:title" content="{{ title|raw }}" />
     <meta property="og:image" content="{{ get_logo() }}" />
 
     {% include 'frontend.' ~ template ~ '.head_common' %}
@@ -118,7 +118,7 @@
 
             <div class="sp-px-6 sp-mb-4 sp-leading-none xs:sp-px-0 xs:sp-mb-6 lg:sp-mb-8">
                 <h1 class="sp-hidden md:sp-block sp-mb-3 sp-text-3xl sp-font-normal print:sp-block">
-                    {{ title }}
+                    {{ title|raw }}
                 </h1>
 
                 <div class="sp-breadcrumb md:sp-text-sm print:sp-mb-6">
