@@ -47,6 +47,18 @@
             </div>
         </div>
 
+        {% if showCaptcha %}
+            {% if Captcha.isVisible() %}
+                <div class="sp-form-row sp-items-center">
+                    <div class="sp-input-container">
+                        {{ Captcha.getHtml() }}
+                    </div>
+                </div>
+            {% else %}
+                {{ Captcha.getHtml() }}
+            {% endif %}
+        {% endif %}
+
         <div class="sp-form-row">
             <label></label>
             <div class="sp-input-container">
@@ -91,5 +103,9 @@
 {% block scripts_footer %}
     {% if jsValidator|default is not empty %}
         {{ jsValidator|raw }}
+    {% endif %}
+
+    {% if showCaptcha %}
+        {{ Captcha.getJs() }}
     {% endif %}
 {% endblock %}

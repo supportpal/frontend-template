@@ -186,9 +186,7 @@
 
     <script type="text/javascript" src="{{ asset_rev('resources/assets/frontend/js/article.js') }}"></script>
 
-    {% if Config.get('settings.captcha_type') != 0
-        and (Config.get('settings.comment_captcha') == 2 or (not auth_check() and Config.get('settings.comment_captcha') == 1))
-    %}
+    {% if show_comment_captcha %}
         {{ Captcha.getJs() }}
     {% endif %}
 

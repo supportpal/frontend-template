@@ -189,7 +189,7 @@
                 </div>
                 {% if Config.get('settings.language_frontend_toggle') == 1 %}
                     <div class="sp-flex-none sp-w-full sm:sp-w-auto print:sp-hidden">
-                        <i class="fas fa-language"></i> &nbsp;
+                        <i class="fas fa-language" title="{{ Lang.choice('general.language', 1) }}"></i> &nbsp;
                         <select name="language" class="sp-bg-primary">
                             {% for code, language in languages %}
                                 <option value="{{ code }}"

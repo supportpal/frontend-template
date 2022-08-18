@@ -41,10 +41,9 @@
 
             {% include 'frontend.' ~ template ~ '.forms.custom_fields' with {'new': true} %}
 
-            {% if Config.get('settings.captcha_type') != 0 and Config.get('settings.registration_captcha') %}
+            {% if show_captcha %}
                 {% if Captcha.isVisible() %}
                     <div class="sp-form-row sp-items-center">
-                        <label>{{ Lang.get('core.captcha') }}</label>
                         <div class="sp-input-container">
                             {{ Captcha.getHtml() }}
                         </div>
@@ -85,7 +84,7 @@
         });
     </script>
 
-    {% if Config.get('settings.captcha_type') != 0 and Config.get('settings.registration_captcha') %}
+    {% if show_captcha %}
         {{ Captcha.getJs() }}
     {% endif %}
 

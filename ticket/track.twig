@@ -3,38 +3,54 @@
 {% block title %}{{ Lang.get('ticket.track_ticket') }}{% endblock %}
 
 {% block breadcrumb %}
-	{{ parent() }}
+    {{ parent() }}
     {{ Lang.get('ticket.track_ticket') }}
 {% endblock %}
 
 {% block content %}
 
-	{{ form_open({'route': 'ticket.frontend.track', 'method': 'post', 'class': 'validate'}) }}
+    {{ form_open({'route': 'ticket.frontend.track', 'method': 'post', 'class': 'validate'}) }}
 
-		<div class="sp-form-row">
-			{{ form_label('email', Lang.get('general.email')) }}
-			<div class="sp-input-container">
-				{{ form_email('email') }}
-			</div>
-		</div>
+        <div class="sp-form-row">
+            {{ form_label('email', Lang.get('general.email')) }}
+            <div class="sp-input-container">
+                {{ form_email('email') }}
+            </div>
+        </div>
 
-		<div class="sp-form-row">
-			{{ form_label('number', Lang.get('ticket.ticket_number')) }}
-			<div class="sp-input-container">
-				{{ form_text('number') }}
-			</div>
-		</div>
+        <div class="sp-form-row">
+            {{ form_label('number', Lang.get('ticket.ticket_number')) }}
+            <div class="sp-input-container">
+                {{ form_text('number') }}
+            </div>
+        </div>
 
-		<div class="sp-form-button">
-			{{ form_submit(Lang.get('ticket.view_ticket')) }}
-		</div>
+        {% if showCaptcha %}
+            {% if Captcha.isVisible() %}
+                <div class="sp-form-row sp-items-center">
+                    <div class="sp-input-container">
+                        {{ Captcha.getHtml() }}
+                    </div>
+                </div>
+            {% else %}
+                {{ Captcha.getHtml() }}
+            {% endif %}
+        {% endif %}
 
-	{{ form_close() }}
+        <div class="sp-form-button">
+            {{ form_submit(Lang.get('ticket.view_ticket')) }}
+        </div>
+
+    {{ form_close() }}
 
 {% endblock %}
 
 {% block scripts_footer %}
     {% if jsValidator|default is not empty %}
         {{ jsValidator|raw }}
+    {% endif %}
+
+    {% if showCaptcha %}
+        {{ Captcha.getJs() }}
     {% endif %}
 {% endblock %}
