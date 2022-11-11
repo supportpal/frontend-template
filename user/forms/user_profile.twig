@@ -16,7 +16,7 @@
         {{ form_label('email', Lang.get('general.email')) }}
         <div class="sp-input-container">
             {% set emailAttributes = {'size': 35} %}
-            {% if auth_check() and auth_user().loggedInViaSSO() %}
+            {% if auth_check() and auth_user().loggedInViaSSO() and not organisation_add %}
                 {% set emailAttributes = emailAttributes|merge({'readonly': 'readonly'}) %}
             {% endif %}
             {{ form_email('email', record.email, emailAttributes) }}
