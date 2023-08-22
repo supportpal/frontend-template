@@ -33,7 +33,7 @@
                 </a>
             </li>
         {% endif %}
-        {% if auth_user().confirmed %}
+        {% if auth_user().email_verified %}
             <li>
                 <a href="{{ route('user.email_history') }}" {% if route starts with 'user.email_history' %}class="current"{% endif %}>
                     {{ Lang.get('user.email_history') }}

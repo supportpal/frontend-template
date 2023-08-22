@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html class="{{ get_template_mode(false) }}">
 
 <head>
     {% set title = block('title') is defined ? block('title') : Lang.get('general.support_portal')|e %}
@@ -18,15 +18,16 @@
     {% set route = Route.currentRouteName() %}
 </head>
 
-<body class="{{ get_template_mode(false) }} sp-bg-secondary sp-text-primary print:sp-bg-primary">
+<body class="sp-bg-secondary sp-text-primary print:sp-bg-primary">
 
     {{ View.fireHook('frontend.body_start') }}
 
     <header class="sp-sticky sp-top-0 sp-z-10002 sp-px-6 sp-bg-primary lg:sp-px-8 print:sp-static print:sp-px-0 print:sp-shadow-none
-                   {% if not (route starts with 'core.frontend.home') or not(isModuleEnabled('Selfservice')) %}sp-shadow{% endif %}">
+                   {% if not (route starts with 'core.frontend.home') or not show_search %}sp-shadow{% endif %}">
         <div class="sp-container sp-relative sp-py-2 sp-m-auto print:sp-max-w-full">
             {{ View.fireHook('frontend.header_start') }}
 
+            {% if show_search %}
             <div class="sp-search sp-absolute sp-hidden sp-flex sp-items-center sp-h-full sp-w-full sp--mt-2
                         sp-bg-primary sp-z-10 print:sp-hidden">
                 <div class="sp-grow sp-w-full">
@@ -40,20 +41,18 @@
                     </div>
                 </div>
             </div>
+            {% endif %}
 
             <div class="sp-flex sp-items-center sp-h-full">
                 <div class="sp-grow">
                     <a href="{{ route('core.frontend.home') }}">
-                        <img src="{{ get_logo(get_template_mode(false) == 'sp-theme-dark') }}" alt="{{ company }}"
-                             class="sp-logo sp-inline {% if get_template_mode(false) == 'sp-theme-dark' %}print:sp-hidden{% endif %}" />
-                        {% if get_template_mode(false) == 'sp-theme-dark' %}
-                            <img src="{{ get_logo() }}" alt="{{ company }}" class="sp-logo sp-hidden print:sp-inline" />
-                        {% endif %}
+                        <img src="{{ get_logo(false) }}" alt="{{ company }}" class="sp-logo sp-inline dark:sp-hidden print:sp-inline" />
+                        <img src="{{ get_logo(true) }}" alt="{{ company }}" class="sp-logo sp-hidden dark:sp-inline print:sp-hidden" />
                     </a>
                 </div>
 
                 <div class="sp-flex-none print:sp-hidden">
-                    {% if not (route starts with 'core.frontend.home') and isModuleEnabled('Selfservice') %}
+                    {% if not (route starts with 'core.frontend.home') and show_search %}
                         <a class="sp-search-button sp-p-2 sp-mr-2">
                             <i class="fas fa-search"></i>
                         </a>
@@ -209,7 +208,7 @@
 
     {% include 'frontend.' ~ template ~ '.footer_common' %}
 
-    <script src="{{ asset_rev('resources/assets/frontend/js/main.js')}}" type="text/javascript"></script>
+    <script src="{{ asset_rev('resources/assets/frontend/js/main.js')}}"></script>
 
     {% block scripts_footer %}{% endblock %}
 

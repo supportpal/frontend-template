@@ -5,21 +5,24 @@
 {% block breadcrumb %}
     {{ parent() }}
     <a href="{{ route('user.organisation') }}">{{ Lang.choice('user.organisation', 1) }}</a> &nbsp;&raquo;&nbsp;
-    {{ Lang.get('user.organisation_add_user') }}
+    {{ Lang.get('user.organisation_invite_user') }}
 {% endblock %}
 
 {% block content %}
 
-    {{ form_open({'route': [ 'user.organisation.addUser' ], 'method': 'POST', 'class': 'validate'}) }}
+    {{ form_open({'route': 'user.organisation.inviteUser.step1', 'method': 'POST', 'class': 'validate'}) }}
 
-        {% include 'frontend.' ~ template ~ '.user.forms.user_profile' with {'organisation_add': true} %}
+        <div class="sp-form-row">
+            {{ form_label('email', Lang.get('general.email')) }}
+            <div class="sp-input-container">
+                {{ form_email('email', record.email, {'size': 35}) }}
+            </div>
+        </div>
 
         {% include 'frontend.' ~ template ~ '.user.forms.organisation' with {'new': true} %}
 
-        {% include 'frontend.' ~ template ~ '.forms.custom_fields' with {'new': true} %}
-
         <div class="sp-form-button">
-            {{ form_submit(Lang.get('user.add_user')) }}
+            {{ form_submit(Lang.get('general.continue')) }}
         </div>
 
     {{ form_close() }}
@@ -28,8 +31,8 @@
 
 {% block scripts_footer %}
     <!-- Phone numbers -->
-    <script type="text/javascript" src="{{ asset_rev('resources/assets/libs/intltelinput/js/intl-tel-input.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset_rev('resources/assets/general/js/phonenumbers.js') }}"></script>
+    <script src="{{ asset_rev('resources/assets/libs/intltelinput/js/intl-tel-input.min.js') }}"></script>
+    <script src="{{ asset_rev('resources/assets/general/js/phonenumbers.js') }}"></script>
 
     <!-- WYSIWYG Editor -->
     <script src="{{ asset_rev('resources/assets/libs/editor.min.js') }}"></script>
@@ -38,12 +41,8 @@
     <!-- Custom fields -->
     <script src="{{ asset_rev('resources/assets/general/js/customfields.js') }}"></script>
     
-    <script type="text/javascript">
+    <script>
         $(document).ready(function() {
-            // Enable hide/show password toggle
-            $('input[type=password]').hideShowPassword();
-
-            // Date picker
             $('.datepicker').datepicker();
         });
     </script>

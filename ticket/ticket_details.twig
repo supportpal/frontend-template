@@ -1,16 +1,25 @@
 <div class="sp-ticket-details">
     <div class="sp-form-row">
+        <label>{{ Lang.get('general.subject') }}</label>
+        <div class="sp-input-container sp-ticket-subject">
+            {{ ticket.subject }}
+        </div>
+    </div>
+
+    <div class="sp-form-row">
         <label>{{ Lang.get('general.number') }}</label>
         <div class="sp-input-container">
             {{ ticket.number }}
         </div>
     </div>
+
     <div class="sp-form-row">
         <label>{{ Lang.choice('ticket.department', 1) }}</label>
         <div class="sp-input-container">
             <span class="sp-ticket-department">{{ ticket.department.frontend_name }}</span>
         </div>
     </div>
+
     <div class="sp-form-row">
         <label>{{ Lang.choice('general.status', 1) }}</label>
         <div class="sp-input-container">
@@ -19,6 +28,7 @@
             </span>
         </div>
     </div>
+
     <div class="sp-form-row">
         <label>{{ Lang.choice('ticket.priority', 1) }}</label>
         <div class="sp-input-container">
@@ -27,12 +37,14 @@
             </span>
         </div>
     </div>
+
     <div class="sp-form-row">
         <label>{{ Lang.get('ticket.submitted') }}</label>
         <div class="sp-input-container">
             {{ timeago(ticket.created_at) }}
         </div>
     </div>
+
     <div class="sp-form-row">
         <label>{{ Lang.get('ticket.last_reply') }}</label>
         <div class="sp-input-container">

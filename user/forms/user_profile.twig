@@ -16,20 +16,33 @@
         {{ form_label('email', Lang.get('general.email')) }}
         <div class="sp-input-container">
             {% set emailAttributes = {'size': 35} %}
-            {% if auth_check() and auth_user().loggedInViaSSO() and not organisation_add %}
+            {% if auth_check() and auth_user().loggedInViaSSO() and not organisation_invite %}
                 {% set emailAttributes = emailAttributes|merge({'readonly': 'readonly'}) %}
             {% endif %}
-            {{ form_email('email', record.email, emailAttributes) }}
+
+            <div {% if record.exists %}class="sp-mb-3"{% endif %}>
+                {{ form_email('email', record.email, emailAttributes) }}
+            </div>
 
             {% if emailChange %}
-                <div class="sp-alert sp-alert-warning sp-alert-bottom">
+                <div class="sp-alert sp-alert-warning sp-mb-3">
                     {{ Lang.get('user.updating_email_address', {'email': emailChange.new_email}) }}
                 </div>
+            {% endif %}
+
+            {% if record.exists %}
+                {% include 'frontend.' ~ template ~ '.user.forms.email_address' with {'hide': true} %}
+
+                {% for address in record.additionalEmails %}
+                    {% include 'frontend.' ~ template ~ '.user.forms.email_address' %}
+                {% endfor %}
+
+                {{ form_button(Lang.get('general.add'), {'class': 'sp-add-email-address'}) }}
             {% endif %}
         </div>
     </div>
 
-    {% if not record.exists or (auth_user().password is not empty and not auth_user().loggedInViaSSO()) %}
+    {% if not organisation_invite and (not record.exists or (auth_user().password is not empty and not auth_user().loggedInViaSSO())) %}
         <div class="sp-form-row">
             {{ form_label('password', Lang.get('general.password')) }}
             <div class="sp-input-container">
@@ -44,7 +57,7 @@
         </div>
     {% endif %}
 
-    {% if not record.exists %}
+    {% if not organisation_invite and not record.exists %}
         <div class="sp-form-row">
             {{ form_label('password_confirmation', Lang.get('user.confirm_password')) }}
             <div class="sp-input-container">
@@ -88,7 +101,7 @@
         {{ form_label('country', Lang.get('user.country')) }}
         <div class="sp-input-container">
             {{ form_select('country', countries(),
-                organisation_add is defined and organisation.country|default is not empty ? organisation.country :
+                organisation_invite is defined and organisation.country|default is not empty ? organisation.country :
                 record.country|default is not empty ? record.country : Config.get('settings.default_country')) }}
         </div>
     </div>
@@ -99,7 +112,7 @@
             {{ form_label('language_code', Lang.choice('general.language', 1)) }}
             <div class="sp-input-container">
                 {{ form_select('language_code', languages,
-                    organisation_add is defined and organisation.language_code|default is not empty ? organisation.language_code
+                    organisation_invite is defined and organisation.language_code|default is not empty ? organisation.language_code
                     : record.language_code|default is not empty ? record.language_code : LanguageFactory.getUserDefault()) }}
             </div>
         </div>
@@ -109,7 +122,7 @@
         {{ form_label('timezone', Lang.get('general.timezone')) }}
         <div class="sp-input-container">
             {{ form_select('timezone', timezones(),
-                organisation_add is defined and organisation.timezone|default is not empty ? organisation.timezone
+                organisation_invite is defined and organisation.timezone|default is not empty ? organisation.timezone
                 : record|default is not empty and record.timezone|default is not empty ? record.timezone : Config.get('settings.default_timezone')) }}
         </div>
     </div>

@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block precontent %}
-    {% if isModuleEnabled('Selfservice') %}
+    {% if show_search %}
         <div class="sp-search-container sp-sticky sp-px-6 sp-bg-primary sp-shadow print:sp-hidden">
             <div class="sp-container sp-pb-3 sp-m-auto sm:sp-pb-6 lg:sp-pt-3 lg:sp-pb-12">
                 <div class="sp-search sp-w-full sp-mx-auto sp-text-center sm:sp-w-3/4 lg:sp-w-2/3">
@@ -31,8 +31,7 @@
     {% else %}
 
         {% if isModuleEnabled('Ticket') %}
-            <div class="sp-flex sp-flex-wrap sp--m-3 lg:sp-flex-nowrap
-                        {% if isModuleEnabled('Selfservice') and not types.isEmpty() %}sp-mb-6{% endif %}">
+            <div class="sp-flex sp-flex-wrap sp--m-3 lg:sp-flex-nowrap {% if not types.isEmpty() %}sp-mb-6{% endif %}">
                 <a href="{{ route('ticket.frontend.ticket.createStep1') }}"
                    class="sp-w-full sp-px-6 sp-py-3 sp-m-3 sp-bg-secondary sp-rounded sp-shadow lg:sp-w-1/2">
                     <div class="sp-dashboard-section sp-flex sp-items-center">
@@ -118,7 +117,7 @@
 {% endblock %}
 
 {% block scripts_footer %}
-    <script type="text/javascript">
+    <script>
         $(function () {
             // Set a top on the search container so the header has a shadow on scrolling.
             $('.sp-search-container').css('top', $('header').height() - $('.sp-search-container').height());

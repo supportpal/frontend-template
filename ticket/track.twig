@@ -21,7 +21,7 @@
         <div class="sp-form-row">
             {{ form_label('number', Lang.get('ticket.ticket_number')) }}
             <div class="sp-input-container">
-                {{ form_text('number') }}
+                {{ form_text('number', Request.get('number')) }}
             </div>
         </div>
 

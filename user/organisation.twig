@@ -7,147 +7,23 @@
     {{ Lang.choice('user.organisation', 1) }}
 {% endblock %}
 
-{% block precontent %}
-    <div class="sp-alert sp-alert-success sp-alert-sticky sp-hidden delete">
-        <div class="sp-container sp-mx-auto">
-            {{ Lang.get('messages.success_deleted', { 'item': mb_strtolower(Lang.choice('user.user', 1), 'UTF-8') }) }}
-        </div>
-    </div>
-    <div class="sp-alert sp-alert-error sp-alert-sticky sp-hidden delete">
-        <div class="sp-container sp-mx-auto">
-            {{ Lang.get('messages.error_deleted', { 'item': mb_strtolower(Lang.choice('user.user', 1), 'UTF-8') }) }}
-        </div>
-    </div>
-{% endblock %}
-
 {% block content %}
 
-    <ul class="sp-tabs">
-        <li id="Profile" class="sp-active">
-            <a>{{ Lang.get('user.profile') }}</a>
-        </li>
-        <li id="Users">
-            <a>{{ Lang.choice('user.user', 2) }}</a>
-        </li>
-    </ul>
+    {% include 'frontend.' ~ template ~ '.user.organisation_tabs' %}
 
-    <div id="tabProfile" class="sp-tab-content">
-        {{ form_model(record, {'route': 'user.organisation.updateProfile', 'method': 'POST', 'class': 'validate profile'}) }}
-            {% include 'frontend.' ~ template ~ '.user.forms.organisation_profile' %}
+    {{ form_model(record, {'route': 'user.organisation.updateProfile', 'method': 'POST', 'class': 'validate profile'}) }}
+        {% include 'frontend.' ~ template ~ '.user.forms.organisation_profile' %}
 
-            <div class="sp-form-button">
-                {{ form_submit(Lang.get('general.save')) }}
-            </div>
-        {{ form_close() }}
-    </div>
-
-    <div id="tabUsers" class="sp-tab-content sp-hidden">
-        <p class="sp-description">{{ Lang.get('user.organisation_desc')|raw }}</p>
-
-        {{ form_model(record, {'route': 'user.organisation.updateUsers', 'method': 'POST'}) }}
-
-            <div class="sp--mx-6">
-                <table class="sp-table-grid sp-organisation-users">
-                    <thead>
-                        <tr>
-                            <th>{{ Lang.get('general.name') }}</th>
-                            <th class="sp-hidden md:sp-table-cell" width="160">{{ Lang.get('user.access_level')|raw }}</th>
-                            <th class="sp-hidden md:sp-table-cell" width="16"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for user in record.users %}
-                            <tr class="existing-row">
-                                <td class="sp-name">
-                                    <img src="{{ user.avatar_url }}" class="sp-avatar sp-max-w-xs" />&nbsp;
-                                    {{ user.formattedname }}
-                                    {% if user.email %}
-                                        <span class="sp-description">{{ '<' ~ user.email ~ '>' }}</span>
-                                    {% endif %}
-                                    {% if record.isOwner(user.id) %}
-                                        <span class="sp-badge sp-ml-1/2">{{ Lang.get('user.owner') }}</span>
-                                    {% endif %}
-                                    {% if user.confirmed == 0 %}
-                                        <span class="sp-badge sp-ml-1/2 sp-bg-gray-600">{{ Lang.get('user.unconfirmed') }}</span>
-                                    {% endif %}
-                                </td>
-                                <td class="sp-access-level {% if auth_user().id == user.id or record.isOwner(user.id) %}sp-no-remove{% endif %}">
-                                    {{ form_select('access_level[' ~ user.id ~ ']', {
-                                        0: Lang.get('user.manager'),
-                                        1: Lang.choice('user.user', 1)
-                                    },
-                                        user.organisation_access_level, record.isOwner(user.id) or user.id == auth_user().id ?
-                                        {'class': 'access-level', 'disabled': 'disabled'} : {'class': 'access-level'}) }}
-                                </td>
-                                <td class="{% if not (auth_user().id == user.id or record.isOwner(user.id)) %}sp-remove{% else %}sp-hidden md:sp-table-cell{% endif %}">
-                                    {% if not (auth_user().id == user.id or record.isOwner(user.id)) %}
-                                        <a data-user="{{ user.id }}" class="remove-button sp-hidden md:sp-inline-block">
-                                            <i class="fas fa-times"></i>
-                                        </a>
-                                        <button data-user="{{ user.id }}" class="remove-button md:sp-hidden">
-                                            <i class="fas fa-times"></i>&nbsp;
-                                            {{ Lang.get('general.remove') }}
-                                        </button>
-                                    {% endif %}
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="sp-form-button sp-form-button-left">
-                {% if ownerOptions is not empty %}
-                    {{ form_submit(Lang.get('general.update')) }}
-                {% endif %}
-                {% if Config.get('settings.registration_enabled') %}
-                <a href="{{ route('user.organisation.addUser') }}">
-                    {{ form_button(Lang.get('user.add_user')) }}
-                </a>
-                {% endif %}
-            </div>
-
-        {{ form_close() }}
-
-        {% if record.owner_id == auth_user().id and ownerOptions is not empty %}
-            <hr />
-
-            {{ form_model(record, {'route': 'user.organisation.transferOwnership', 'method': 'POST', 'class': 'validate transferOwnership'}) }}
-
-                <h3>{{ Lang.get('user.transfer_ownership') }}</h3>
-
-                <p class="sp-description">{{ Lang.get('user.transfer_ownership_desc') }}</p>
-
-                <div class="sp-form-row">
-                    {{ form_label('owner', Lang.get('user.new_owner')) }}
-                    <div class="sp-input-container">
-                        <select name="owner" placeholder="{{ Lang.get('user.start_typing_name') }}">
-                            <option value=''></option>
-                            {% for user in ownerOptions %}
-                                <option data-data='{{ user|json_encode(constant('JSON_FORCE_OBJECT')) }}' value='{{ user.id }}'>
-                                    {{ user.formatted_name }}
-                                </option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                </div>
-
-                <div class="sp-form-button">
-                    {{ form_submit(Lang.get('general.transfer')) }}
-                </div>
-
-            {{ form_close() }}
-        {% endif %}
-    </div>
+        <div class="sp-form-button">
+            {{ form_submit(Lang.get('general.save')) }}
+        </div>
+    {{ form_close() }}
 
 {% endblock %}
 
 {% block scripts_footer %}
     {% if jsValidator|default is not empty %}
         {{ jsValidator|raw }}
-    {% endif %}
-    {% if transferValidator|default is not empty %}
-        {{ transferValidator|raw }}
     {% endif %}
 
     <!-- WYSIWYG Editor -->
@@ -157,15 +33,5 @@
     <!-- Custom fields -->
     <script src="{{ asset_rev('resources/assets/general/js/customfields.js') }}"></script>
 
-    <script type="text/javascript">
-        $(document).ready(function() {
-            // Enable hide/show password toggle
-            $('input[type=password]').hideShowPassword();
-
-            // Date picker
-            $('.datepicker').datepicker();
-        });
-    </script>
-
-    <script type="text/javascript" src="{{ asset_rev('resources/assets/frontend/js/organisation.js') }}"></script>
+    <script src="{{ asset_rev('resources/assets/frontend/js/organisation.js') }}"></script>
 {% endblock %}

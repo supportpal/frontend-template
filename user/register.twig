@@ -65,8 +65,8 @@
 
 {% block scripts_footer %}
     <!-- Phone numbers -->
-    <script type="text/javascript" src="{{ asset_rev('resources/assets/libs/intltelinput/js/intl-tel-input.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset_rev('resources/assets/general/js/phonenumbers.js') }}"></script>
+    <script src="{{ asset_rev('resources/assets/libs/intltelinput/js/intl-tel-input.min.js') }}"></script>
+    <script src="{{ asset_rev('resources/assets/general/js/phonenumbers.js') }}"></script>
 
     <!-- WYSIWYG Editor -->
     <script src="{{ asset_rev('resources/assets/libs/editor.min.js') }}"></script>
@@ -74,11 +74,8 @@
 
     <!-- Custom fields -->
     <script src="{{ asset_rev('resources/assets/general/js/customfields.js') }}"></script>
-    <script type="text/javascript">
+    <script>
         $(document).ready(function() {
-            // Enable hide/show password toggle
-            $('input[type=password]').hideShowPassword();
-
             // Date picker
             $('.datepicker').datepicker();
         });

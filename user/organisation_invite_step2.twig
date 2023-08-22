@@ -1,0 +1,50 @@
+{% extends parent_template %}
+
+{% block title %}{{ Lang.choice('user.organisation', 1) }}{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+    <a href="{{ route('user.organisation') }}">{{ Lang.choice('user.organisation', 1) }}</a> &nbsp;&raquo;&nbsp;
+    {{ Lang.get('user.organisation_invite_user') }}
+{% endblock %}
+
+{% block content %}
+
+    {{ form_open({'route': 'user.organisation.inviteUser.step2', 'method': 'POST', 'class': 'validate'}) }}
+
+        {% include 'frontend.' ~ template ~ '.user.forms.user_profile' with {'organisation_invite': true} %}
+
+        {% include 'frontend.' ~ template ~ '.user.forms.organisation' with {'new': true} %}
+
+        {% include 'frontend.' ~ template ~ '.forms.custom_fields' with {'new': true} %}
+
+        <div class="sp-form-button">
+            {{ form_submit(Lang.get('user.invite_user')) }}
+        </div>
+
+    {{ form_close() }}
+
+{% endblock %}
+
+{% block scripts_footer %}
+    <!-- Phone numbers -->
+    <script src="{{ asset_rev('resources/assets/libs/intltelinput/js/intl-tel-input.min.js') }}"></script>
+    <script src="{{ asset_rev('resources/assets/general/js/phonenumbers.js') }}"></script>
+
+    <!-- WYSIWYG Editor -->
+    <script src="{{ asset_rev('resources/assets/libs/editor.min.js') }}"></script>
+    <script src="{{ asset_rev('resources/assets/general/js/editor_config.js') }}"></script>
+
+    <!-- Custom fields -->
+    <script src="{{ asset_rev('resources/assets/general/js/customfields.js') }}"></script>
+    
+    <script>
+        $(document).ready(function() {
+            $('.datepicker').datepicker();
+        });
+    </script>
+
+    {% if jsValidator|default is not empty %}
+        {{ jsValidator|raw }}
+    {% endif %}
+{% endblock %}

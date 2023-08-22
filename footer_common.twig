@@ -1,14 +1,14 @@
 <!-- Laravel Localisation -->
-<script type="text/javascript" src="{{ asset_rev('resources/assets/general/js/lang.min.js') }}"></script>
-<script type="text/javascript">
+<script src="{{ asset_rev('resources/assets/general/js/lang.min.js') }}"></script>
+<script>
     Lang.addMessages({{ translationStrings|raw }});
     // Add the messages before setting the locale...
     Lang.setLocale("{{ App.getLocale() }}");
 </script>
 
 <!-- Laravel Routes -->
-<script type="text/javascript" src="{{ asset_rev('resources/assets/general/js/routes.min.js') }}"></script>
-<script type="text/javascript">
+<script src="{{ asset_rev('resources/assets/general/js/routes.min.js') }}"></script>
+<script>
     laroute.set_absolute({{ Config.get('laroute.absolute', false) }});
     laroute.set_root_url("{{ url('/') }}");
     laroute.set_routes({{ routeCollection|raw }});
@@ -17,8 +17,7 @@
 </script>
 
 <!-- Vendor -->
-<script type="text/javascript" src="{{ asset_rev('resources/assets/libs/common.min.js') }}"></script>
-<link data-include href="{{ asset_rev('resources/assets/libs/css/common.min.css') }}" rel="stylesheet" type="text/css" property="stylesheet" />
+<script src="{{ asset_rev('resources/assets/libs/common.min.js') }}"></script>
 
 <!-- General -->
 <script src="{{ asset_rev('resources/assets/general/js/main.js') }}"></script>

@@ -24,7 +24,7 @@
 		{{ Lang.get('user.please_set_password') }}
 		<br /><br />
 
-		{{ form_open({'route': 'user.resetconfirm', 'method': 'post', 'class': 'validate'}) }}
+		{{ form_open({'route': 'user.resetverify', 'method': 'post', 'class': 'validate'}) }}
 
 			{{ form_hidden('email', Request.input('email')) }}
 			{{ form_hidden('token', Request.input('token')) }}
@@ -54,13 +54,6 @@
 {% endblock %}
 
 {% block scripts_footer %}
-    <script type="text/javascript">
-        $(document).ready(function() {
-            // Enable hide/show password toggle
-            $('input[type=password]').hideShowPassword();
-        });
-    </script>
-
     {% if jsValidator|default is not empty %}
 	    {{ jsValidator|raw }}
     {% endif %}

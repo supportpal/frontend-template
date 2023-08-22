@@ -22,7 +22,7 @@
 {% endblock %}
 
 {% block scripts_footer %}
-    <script type="text/javascript" src="{{ asset_rev('resources/assets/general/js/linked_account.js') }}"></script>
+    <script src="{{ asset_rev('resources/assets/general/js/linked_account.js') }}"></script>
 
     <script src="{{ asset_rev('resources/assets/libs/datatables/js/jquery.dataTables.min.js') }}"></script>
     {{ table.script()|raw }}

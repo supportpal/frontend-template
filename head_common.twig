@@ -12,9 +12,15 @@
 
 <!-- Icon -->
 {% if Config.get('settings.favicon') is not empty %}
-    <link rel="icon" type="image/png" href="{{ Config.get('settings.favicon') }}" sizes="32x32" />
+    <link rel="icon" href="{{ Config.get('settings.favicon') }}" sizes="32x32"
+          {% if Config.get('settings.favicon_dark_mode') is not empty %}media="(prefers-color-scheme: light)"{% endif %} />
+{% endif %}
+{% if Config.get('settings.favicon_dark_mode') is not empty %}
+    <link rel="icon" href="{{ Config.get('settings.favicon_dark_mode') }}" sizes="32x32" media="(prefers-color-scheme: dark)" />
 {% endif %}
 
 <!-- CSS -->
 {{ colourScheme|raw }}
-<link data-include href="{{ asset_rev('resources/assets/frontend/css/main.min.css') }}" rel="stylesheet" type="text/css" />
+<script src="{{ asset_rev('/resources/assets/general/js/preload.js') }}"></script>
+<link href="{{ asset_rev('resources/assets/frontend/css/main.min.css') }}" rel="stylesheet" />
+<link href="{{ asset_rev('resources/assets/libs/css/common.min.css') }}" rel="stylesheet" />

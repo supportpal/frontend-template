@@ -2,6 +2,10 @@
 
 {% block title %}{{ Lang.get('user.profile') }}{% endblock %}
 
+{% block scripts_header %}
+    <link rel="stylesheet" href="{{ asset_rev('resources/assets/libs/cropper/css/cropper.min.css') }}" />
+{% endblock %}
+
 {% block breadcrumb %}
     {{ parent() }}
     {{ Lang.get('user.profile') }}
@@ -23,9 +27,12 @@
             {{ form_label('template_mode', Lang.get('core.template_mode')) }}
             <div class="sp-input-container">
                 {{ form_select('template_mode',
-                    {1: Lang.get('core.light_mode'), 2: Lang.get('core.dark_mode')},
-                    record.template_mode is empty ? Config.get('settings.frontend_template_mode') : record.template_mode
+                    {0: Lang.get('general.system'), 1: Lang.get('core.light_mode'), 2: Lang.get('core.dark_mode')},
+                    record.template_mode
                 ) }}
+                <div class="sp-description">
+                    {{ Lang.get('core.template_mode_system_desc') }}
+                </div>
             </div>
         </div>
 
@@ -45,8 +52,11 @@
 
 {% block scripts_footer %}
     <!-- Phone numbers -->
-    <script type="text/javascript" src="{{ asset_rev('resources/assets/libs/intltelinput/js/intl-tel-input.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset_rev('resources/assets/general/js/phonenumbers.js') }}"></script>
+    <script src="{{ asset_rev('resources/assets/libs/intltelinput/js/intl-tel-input.min.js') }}"></script>
+    <script src="{{ asset_rev('resources/assets/general/js/phonenumbers.js') }}"></script>
+
+    <!-- Additional email addresses -->
+    <script type="text/javascript" src="{{ asset_rev('resources/assets/general/js/emailaddresses.js') }}"></script>
 
     <!-- WYSIWYG Editor -->
     <script src="{{ asset_rev('resources/assets/libs/editor.min.js') }}"></script>
@@ -55,15 +65,11 @@
     <!-- Custom fields -->
     <script src="{{ asset_rev('resources/assets/general/js/customfields.js') }}"></script>
 
-    <link rel="stylesheet" type="text/css" href="{{ asset_rev('resources/assets/libs/cropper/css/cropper.min.css') }}" />
-    <script type="text/javascript" src="{{ asset_rev('resources/assets/libs/cropper/js/cropper.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset_rev('resources/assets/general/js/user.js') }}"></script>
+    <script src="{{ asset_rev('resources/assets/libs/cropper/js/cropper.min.js') }}"></script>
+    <script src="{{ asset_rev('resources/assets/general/js/user.js') }}"></script>
 
-    <script type="text/javascript">
+    <script>
         $(document).ready(function() {
-            // Enable hide/show password toggle
-            $('input[type=password]').hideShowPassword();
-
             // Date picker
             $('.datepicker').datepicker();
 

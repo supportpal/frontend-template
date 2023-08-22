@@ -1,0 +1,14 @@
+<ul class="sp-tabs">
+    {% set tabRoute = 'user.organisation' %}
+    <li {% if Route.currentRouteName() == tabRoute %}class="sp-active"{% endif %}>
+        <a href="{{ route(tabRoute) }}">{{ Lang.get('user.profile') }}</a>
+    </li>
+    {% set tabRoute = 'user.organisation.users' %}
+    <li {% if Route.currentRouteName() == tabRoute %}class="sp-active"{% endif %}>
+        <a href="{{ route(tabRoute) }}">{{ Lang.choice('user.user', 2) }}</a>
+    </li>
+    {% set tabRoute = 'user.organisation.invites' %}
+    <li {% if Route.currentRouteName() == tabRoute %}class="sp-active"{% endif %}>
+        <a href="{{ route(tabRoute) }}">{{ Lang.choice('user.invitations', 2) }}</a>
+    </li>
+</ul>

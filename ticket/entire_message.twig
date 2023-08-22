@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html class="{{ get_template_mode(false) }}">
 
 <head>
     <meta name="robots" content="noindex" />
@@ -11,7 +11,7 @@
     {{ View.fireHook('frontend.head') }}
 </head>
 
-<body class="{{ get_template_mode(false) }} sp-bg-secondary sp-text-primary print:sp-bg-primary" data-disable-pace>
+<body class="sp-bg-secondary sp-text-primary print:sp-bg-primary" data-disable-pace>
 
     {{ View.fireHook('frontend.body_start') }}
 
@@ -45,7 +45,7 @@
     <!-- Attachment previews -->
     <script src="{{ asset_rev('resources/assets/libs/att.preview/js/att.preview.min.js') }}"></script>
 
-    <script type="text/javascript">
+    <script>
         $(document).ready(function() {
             // Open links in a new window/tab. Needs rel="noopener" due to
             // https://www.jitbit.com/alexblog/256-targetblank---the-most-underestimated-vulnerability-ever/

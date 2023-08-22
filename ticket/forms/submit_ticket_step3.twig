@@ -181,7 +181,7 @@
 {% endblock %}
 
 {% block scripts_footer %}
-    <script type="text/javascript">
+    <script>
         // If we should attempt to fetch related articles
         var relatedArticlesEnabled;
         {% if isModuleEnabled('Selfservice') and Config.get('channel.web.settings.show_related_articles') %}
@@ -191,14 +191,14 @@
         {% endif %}
     </script>
 
-    <script type="text/javascript" src="{{ asset_rev('resources/assets/frontend/js/newticket.js') }}"></script>
+    <script src="{{ asset_rev('resources/assets/frontend/js/newticket.js') }}"></script>
 
     <script src="{{ asset_rev('resources/assets/libs/editor.min.js') }}"></script>
     <script src="{{ asset_rev('resources/assets/general/js/editor_config.js') }}"></script>
 
     <!-- Attachments -->
     <script src="{{ asset_rev('resources/assets/libs/fileupload/js/jquery.fileupload.min.js') }}"></script>
-    <script type="text/javascript">
+    <script>
         new FileUpload();
     </script>
 

@@ -150,14 +150,22 @@
     <!-- Attachments -->
     <script src="{{ asset_rev('resources/assets/libs/fileupload/js/jquery.fileupload.min.js') }}"></script>
     <script src="{{ asset_rev('resources/assets/libs/att.preview/js/att.preview.min.js') }}"></script>
-    <script type="text/javascript">
+    <script>
         new FileUpload();
     </script>
 
     <!-- Custom fields -->
     <script src="{{ asset_rev('resources/assets/general/js/customfields.js') }}"></script>
 
-    <script type="text/javascript">
+    <!-- Notifications -->
+    <script src="{{ asset_rev('resources/assets/frontend/js/notification.js') }}"></script>
+    <script>
+        (function (App, Echo) {
+            App.Notifications.configure(new Echo({{ echoConfig|raw }}))
+        })(App, Echo);
+    </script>
+
+    <script>
         var ticketNumber = "{{ ticket.number }}",
             closedStatusId = "{{ Config.get('settings.default_resolved_status') }}",
             descReplyOrder = {% if ticket.user.isDescendingReplyOrder() %}true{% else %}false{% endif %};

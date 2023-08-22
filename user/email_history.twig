@@ -8,10 +8,36 @@
 {% endblock %}
 
 {% block content %}
+    <div class="sp-date-range-filter sp-mr-4">
+        <button class="sp-action sp-filter-datepicker">
+            <i class="fas fa-calendar"></i>
+            <span class="sp-hidden xs:sp-inline">
+                &nbsp;<span class="sp-filter-datepicker-text">{{ Lang.get('general.date') }}</span>
+            </span>
+        </button>
+    </div>
+
     {{ table.render()|raw }}
 {% endblock %}
 
 {% block scripts_footer %}
     <script src="{{ asset_rev('resources/assets/libs/datatables/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset_rev('resources/assets/libs/daterangepicker/js/daterangepicker.min.js') }}"></script>
+    <script src="{{ asset_rev('resources/assets/operator/js/datefiltering.js') }}"></script>
     {{ table.script()|raw }}
+
+    <script>
+        $(function () {
+            var $table = $('.sp-dataTable').DataTable();
+
+            // DataTable events.
+            $table.on('init.dt', function (settings, json) {
+                $('.sp-date-range-filter').prependTo('div.dataTables_filter');
+
+                $("div.dataTables_filter")
+                    .removeClass('dataTables_filter')
+                    .addClass('sp-flex sp-ml-6 sp-mb-6');
+            });
+        });
+    </script>
 {% endblock %}
