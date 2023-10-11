@@ -166,7 +166,7 @@
     </script>
 
     <script>
-        var ticketNumber = "{{ ticket.number }}",
+        var ticketId = "{{ ticket.id }}",
             closedStatusId = "{{ Config.get('settings.default_resolved_status') }}",
             descReplyOrder = {% if ticket.user.isDescendingReplyOrder() %}true{% else %}false{% endif %};
     </script>
