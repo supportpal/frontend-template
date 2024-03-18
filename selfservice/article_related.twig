@@ -1,5 +1,5 @@
 {% if not related.isEmpty() %}
-    <ul class="sp-list-outside">
+    <ul class="sp-list-outside sp-related-articles">
         {% for article in related %}
             {% if type is empty %}
                 {# This is needed if we don't have a single type, for example when showing related articles when submitting a ticket #}
