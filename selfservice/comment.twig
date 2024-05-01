@@ -16,10 +16,15 @@
                             {% if comment.author.isOperator %}
                                 &nbsp;<span class="sp-badge">{{ Lang.get('general.staff') }}</span>
                             {% endif %}
+                            {% if comment.parent_id and comment.parent_author %}
+                                &nbsp;<span class="sp-description sp-inline-block">{{ Lang.get('selfservice.in_reply_to') }} <a href="#comment-{{ comment.parent_id }}">{{ comment.parent_author.formatted_name }}</a></span>
+                            {% endif %}
                             &nbsp;<span class="sp-description sp-inline-block">{{ timeago(comment.created_at) }}</span>
                         </div>
 
-                        {% if comment.rating|default is not empty and comment.rating < Config.get('settings.comment_threshold') %}
+                        {% if comment.deleted_at %}
+                            <div class="sp-description">
+                        {% elseif comment.rating|default is not empty and comment.rating < Config.get('settings.comment_threshold') %}
                             <a class="sp-comment-hidden sp-inline-block sp-mt-1 sp-mb-3/2 sp-description sp-italic">{{ Lang.get('selfservice.comment_below_threshold') }}</a>
                             <div class="sp-comment-text sp-mt-1 sp-mb-3/2 sp-hidden">
                         {% else %}
@@ -28,34 +33,36 @@
                             {{ comment.purified_text|raw }}
                         </div>
 
-                        <div class="sp-comment-options sp-text-sm sp-text-secondary">
-                            {% if Config.get('settings.comment_ratings') %}
-                                <span class="sp-mr-1">
-                                    <a class="sp-rate-comment sp-inline-block sp-text-tertiary" data-comment="{{ comment.id }}" data-score="1">
-                                        <i class="fas fa-thumbs-up
-                                                  {% if comment.ratings[0] is defined and comment.ratings[0].score == '1' %}sp-text-secondary{% endif %}"></i>
-                                    </a>&nbsp;
-                                    <a class="sp-rate-comment sp-inline-block sp-text-tertiary" data-comment="{{ comment.id }}" data-score="-1">
-                                        <i class="fas fa-thumbs-down
-                                                  {% if comment.ratings[0] is defined and comment.ratings[0].score == '-1' %}sp-text-secondary{% endif %}"></i>
-                                    </a>
-                                </span>
+                        {% if not comment.deleted_at %}
+                            <div class="sp-comment-options sp-text-sm sp-text-secondary">
+                                {% if Config.get('settings.comment_ratings') %}
+                                    <span class="sp-mr-1">
+                                        <a class="sp-rate-comment sp-inline-block sp-text-tertiary" data-comment="{{ comment.id }}" data-score="1">
+                                            <i class="fas fa-thumbs-up
+                                                      {% if comment.ratings[0] is defined and comment.ratings[0].score == '1' %}sp-text-secondary{% endif %}"></i>
+                                        </a>&nbsp;
+                                        <a class="sp-rate-comment sp-inline-block sp-text-tertiary" data-comment="{{ comment.id }}" data-score="-1">
+                                            <i class="fas fa-thumbs-down
+                                                      {% if comment.ratings[0] is defined and comment.ratings[0].score == '-1' %}sp-text-secondary{% endif %}"></i>
+                                        </a>
+                                    </span>
 
-                                {% if comment.rating is not empty %}
-                                    <span class="sp-comment-rating">{{ comment.rating }}</span>
-                                {% else %}
-                                    <span class="sp-comment-score sp-hidden"></span>
+                                    {% if comment.rating is not empty %}
+                                        <span class="sp-comment-rating">{{ comment.rating }}</span>
+                                    {% else %}
+                                        <span class="sp-comment-score sp-hidden"></span>
+                                    {% endif %}
+
+                                    {% if Config.get('settings.comment_write') == 0 or auth_check() %}
+                                        <span class="sp-mx-1 print:sp-hidden">&middot;</span>
+                                    {% endif %}
                                 {% endif %}
 
                                 {% if Config.get('settings.comment_write') == 0 or auth_check() %}
-                                    <span class="sp-mx-1 print:sp-hidden">&middot;</span>
+                                    <a class="sp-reply-to-comment sp-description print:sp-hidden" data-id="{{ comment.id }}">{{ Lang.get('general.reply') }}</a>
                                 {% endif %}
-                            {% endif %}
-
-                            {% if Config.get('settings.comment_write') == 0 or auth_check() %}
-                                <a class="sp-reply-to-comment sp-description print:sp-hidden" data-id="{{ comment.id }}">{{ Lang.get('general.reply') }}</a>
-                            {% endif %}
-                        </div>
+                            </div>
+                        {% endif %}
 
                         {% if comment.children is not empty %}
                             {% if comment.more|default is not empty and comment_ordering == 1 %}

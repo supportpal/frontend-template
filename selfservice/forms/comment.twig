@@ -1,4 +1,4 @@
-{{ form_open({ 'route': [ 'selfservice.comment' ], 'method': 'post', 'class': 'add-comment validate' }) }}
+{{ form_open({ 'route': 'selfservice.comment', 'method': 'post', 'class': 'add-comment validate' }) }}
 
     {{ form_hidden('article_id', article['id']) }}
     {{ form_hidden('type_id', type) }}
@@ -20,7 +20,7 @@
 
     <div class="sp-form-row sp-form-full">
         <div class="sp-input-container">
-            {{ form_textarea('text', null, {'placeholder': Lang.choice('selfservice.comment', 1), 'class': 'sp-h-24'}) }}
+            {{ form_editor('text', null, {'placeholder': Lang.choice('selfservice.comment', 1)}) }}
         </div>
     </div>
 

@@ -64,12 +64,12 @@
                       sp-text-center sp-align-middle hover:sp-text-white group">
                 <i class="fas fa-envelope group-hover:sp-opacity-75"></i>
             </a><!--
-        --><a href="http://twitter.com/intent/tweet?text={{ article.title|url_encode }}&amp;url={{ article.url(type) }}"
+        --><a href="https://twitter.com/intent/tweet?text={{ article.title|url_encode }}&amp;url={{ article.url(type) }}"
               class="sp-inline-block sp-h-8 sp-w-8 sp-p-1 sp-ml-2 sp-rounded-full sp-text-white sp-text-center
-                     sp-align-middle hover:sp-text-white group" style="background: #55acee">
-                <i class="fab fa-twitter group-hover:sp-opacity-75"></i>
+                     sp-align-middle hover:sp-text-white group" style="background: #000000">
+                <i class="fab fa-x-twitter group-hover:sp-opacity-75"></i>
             </a><!--
-        --><a href="http://www.facebook.com/sharer.php?u={{ article.url(type) }}"
+        --><a href="https://www.facebook.com/sharer.php?u={{ article.url(type) }}"
               class="sp-inline-block sp-h-8 sp-w-8 sp-p-1 sp-ml-2 sp-rounded-full sp-text-white sp-text-center
                      sp-align-middle hover:sp-text-white group" style="background: #3b5998">
                 <i class="fab fa-facebook group-hover:sp-opacity-75"></i>
@@ -167,7 +167,6 @@
 {% block scripts_footer %}
     <!-- WYSIWYG Editor -->
     <script src="{{ asset_rev('resources/assets/libs/editor.min.js') }}"></script>
-    <script src="{{ asset_rev('resources/assets/general/js/editor_config.js') }}"></script>
 
     <!-- Custom fields -->
     <script src="{{ asset_rev('resources/assets/general/js/customfields.js') }}"></script>

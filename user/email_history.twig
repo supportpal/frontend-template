@@ -32,10 +32,10 @@
 
             // DataTable events.
             $table.on('init.dt', function (settings, json) {
-                $('.sp-date-range-filter').prependTo('div.dataTables_filter');
+                $('.sp-date-range-filter').prependTo('div.dt-search');
 
-                $("div.dataTables_filter")
-                    .removeClass('dataTables_filter')
+                $("div.dt-search")
+                    .removeClass('dt-search')
                     .addClass('sp-flex sp-ml-6 sp-mb-6');
             });
         });

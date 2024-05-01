@@ -21,10 +21,13 @@
 		<div class="sp-alert sp-alert-error sp-alert-m-0">
 			<strong>{{ Lang.get('messages.error') }}</strong><br />
 			{{ error }}
-			{% if resend %}
-				<a href="{{ resend }}" class="sp-button">{{ Lang.get('user.resend_verification_email') }}</a>
-			{% endif %}
 		</div>
+
+		{% if resend %}
+			<div class="sp-mt-6">
+				<a href="{{ resend }}" class="sp-button">{{ Lang.get('user.resend_verification_email') }}</a>
+			</div>
+		{% endif %}
 	{% endif %}
 
 {% endblock %}
