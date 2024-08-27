@@ -123,7 +123,8 @@
         {% include 'frontend.' ~ template ~ '.ticket.ticket_messages' %}
     {% endif %}
 
-    {% if ticket.locked == 0 %}
+    {% set channelAddonInstance = ChannelFactory.getChannel(ticket.channel.name) %}
+    {% if ticket.locked == 0 and channelAddonInstance.canReplyToTicket(ticket, auth_user() ?: ticket.user) %}
         <div class="add-reply {% if ticket.user.isAscendingReplyOrder() %}sp-mt-6{% else %}sp-mb-6{% endif %}">
             {% include 'frontend.' ~ template ~ '.ticket.forms.message' %}
         </div>

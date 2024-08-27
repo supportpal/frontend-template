@@ -2,6 +2,8 @@
 <html class="{{ get_template_mode(false) }}">
 
 <head>
+    {{ View.fireHook('frontend.head_start') }}
+
     {% set title = block('title') is defined ? block('title') : Lang.get('general.support_portal')|e %}
     <title>{{ company }} - {{ title|raw }}</title>
 
@@ -13,9 +15,10 @@
 
     {% block scripts_header %}{% endblock %}
 
-    {{ View.fireHook('frontend.head') }}
-
     {% set route = Route.currentRouteName() %}
+
+    {{ View.fireHook('frontend.head') }}
+    {{ View.fireHook('frontend.head_end') }}
 </head>
 
 <body class="sp-bg-secondary sp-text-primary print:sp-bg-primary">
