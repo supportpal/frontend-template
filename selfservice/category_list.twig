@@ -9,7 +9,7 @@
                    href='{{ category.frontend_url }}'>
                     <i class="fas fa-fw fa-folder-open"></i>&nbsp; {{ category.name }} ({{ category.count }})
                 </a>
-                <ul class="sp-pl-5 sp-category-article-list">
+                <ul class="sp-ps-5 sp-category-article-list">
                     {% for article in category.articles %}
                         <li>
                             <a href='{{ article.url(type) }}'>{{ article.title }}</a>

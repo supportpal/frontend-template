@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="{{ get_template_mode(false) }}">
+<html class="{{ get_template_mode(false) }}" dir="{{ get_template_dir() }}" lang="{{ App.getLocale() }}">
 
 <head>
     {{ View.fireHook('frontend.head_start') }}
@@ -39,7 +39,7 @@
                     </form>
                 </div>
                 <div class="sp-flex-none">
-                    <div class="sp-search-close sp-button sp-ml-3">
+                    <div class="sp-search-close sp-button sp-ms-3" title="{{ Lang.get('general.close') }}">
                         <i class="fas fa-times"></i>
                     </div>
                 </div>
@@ -56,7 +56,7 @@
 
                 <div class="sp-flex-none print:sp-hidden">
                     {% if not (route starts with 'core.frontend.home') and show_search %}
-                        <a class="sp-search-button sp-p-2 sp-mr-2">
+                        <a class="sp-search-button sp-p-2 sp-me-2">
                             <i class="fas fa-search"></i>
                         </a>
                     {% endif %}
@@ -64,19 +64,19 @@
 
                 <div class="sp-flex-none sp-hidden lg:sp-block print:sp-hidden">
                     {% if Config.get('settings.website_url') is not empty %}
-                        <a href="{{ Config.get('settings.website_url') }}" class="sp-mr-4">
+                        <a href="{{ Config.get('settings.website_url') }}" class="sp-me-4">
                             {{ Lang.get('core.back_to_website') }}
                         </a>
                     {% endif %}
 
                     {% if auth_check() %}
-                        <div class="sp-dropdown-container sp-relative sp-ml-1">
+                        <div class="sp-dropdown-container sp-relative sp-ms-1">
                             <a class="sp-action">
                                 <img class="sp-avatar sp-max-w-sm sp-shadow" src="{{ auth_user().avatar_url }}" />&nbsp;
                                 {{ auth_user().formatted_name }}
-                                <i class="fas fa-chevron-down sp-ml-1 sp-text-xs" aria-hidden="true"></i>
+                                <i class="fas fa-chevron-down sp-ms-1 sp-text-xs" aria-hidden="true"></i>
                             </a>
-                            <div class="sp-dropdown sp-right-0 sp-mt-2">
+                            <div class="sp-dropdown sp-end-0 sp-mt-2">
                                 {% include 'frontend.' ~ template ~ '.navigation' with {'account': true} %}
                             </div>
                         </div>

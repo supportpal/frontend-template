@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="{{ get_template_mode(false) }}">
+<html class="{{ get_template_mode(false) }}" dir="{{ get_template_dir() }}" lang="{{ App.getLocale() }}">
 
 <head>
     <meta name="robots" content="noindex" />
@@ -23,7 +23,7 @@
                 {{ Lang.get('ticket.downloading') }}
             </div>
 
-            <h2 class="sp-ml-4 xs:sp-ml-0">{{ ticket.subject }}</h2>
+            <h2 class="sp-ms-4 xs:sp-ms-0">{{ ticket.subject }}</h2>
 
             <div class="sp-content sp-bg-primary xs:sp-rounded">
                 {{ View.fireHook('frontend.content_start') }}

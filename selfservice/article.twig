@@ -33,7 +33,7 @@
 
 {% block content %}
 
-    <a href="javascript:window.print()" class="sp-button sp-button-sm sp--mt-3/2 sp-ml-3 sp-float-right print:sp-hidden">
+    <a href="javascript:window.print()" class="sp-button sp-button-sm sp--mt-3/2 sp-ms-3 sp-float-end print:sp-hidden">
         <i class="fas fa-print"></i>&nbsp;
         {{ Lang.get('general.print') }}
     </a>
@@ -60,17 +60,17 @@
         <div class="sp-w-full md:sp-w-1/2">
             <span>{{ Lang.get('general.share_via') }}</span>
             <a href="mailto:?body={{ article.title|url_encode }} - {{ article.url(type) }}"
-               class="sp-inline-block sp-h-8 sp-w-8 sp-p-1 sp-ml-1 sp-bg-gray-600 sp-rounded-full sp-text-white
+               class="sp-inline-block sp-h-8 sp-w-8 sp-p-1 sp-ms-1 sp-bg-gray-600 sp-rounded-full sp-text-white
                       sp-text-center sp-align-middle hover:sp-text-white group">
                 <i class="fas fa-envelope group-hover:sp-opacity-75"></i>
             </a><!--
         --><a href="https://twitter.com/intent/tweet?text={{ article.title|url_encode }}&amp;url={{ article.url(type) }}"
-              class="sp-inline-block sp-h-8 sp-w-8 sp-p-1 sp-ml-2 sp-rounded-full sp-text-white sp-text-center
+              class="sp-inline-block sp-h-8 sp-w-8 sp-p-1 sp-ms-2 sp-rounded-full sp-text-white sp-text-center
                      sp-align-middle hover:sp-text-white group" style="background: #000000">
                 <i class="fab fa-x-twitter group-hover:sp-opacity-75"></i>
             </a><!--
         --><a href="https://www.facebook.com/sharer.php?u={{ article.url(type) }}"
-              class="sp-inline-block sp-h-8 sp-w-8 sp-p-1 sp-ml-2 sp-rounded-full sp-text-white sp-text-center
+              class="sp-inline-block sp-h-8 sp-w-8 sp-p-1 sp-ms-2 sp-rounded-full sp-text-white sp-text-center
                      sp-align-middle hover:sp-text-white group" style="background: #3b5998">
                 <i class="fab fa-facebook group-hover:sp-opacity-75"></i>
             </a>
@@ -78,7 +78,7 @@
 
         <!-- Rate article -->
         {% if Config.get('settings.ratings_enabled') %}
-            <div class="sp-w-full sp-mt-3 md:sp-w-1/2 md:sp-mt-0 md:sp-text-right">
+            <div class="sp-w-full sp-mt-3 md:sp-w-1/2 md:sp-mt-0 md:sp-text-end">
                 {% if Config.get('settings.rating_post') == '0' or auth_check() %}
                     <div class="sp-rate-article-container">
                         {{ Lang.get('selfservice.article_find_useful') }} &nbsp;
@@ -124,7 +124,7 @@
         {% if Config.get('settings.comment_write') == 0 or auth_check() %}
             <div class="add-comment-form sp-collapsible print:sp-hidden">
                 {{ Lang.get('general.add_item', {'item': Lang.choice('selfservice.comment', 1)}) }}
-                <span class="sp-ml-auto">
+                <span class="sp-ms-auto">
                     <i class="fas fa-chevron-up"></i>
                 </span>
             </div>
@@ -144,7 +144,7 @@
                     <option value="2" {{ (comment_ordering == '2') ? 'selected="selected"' : '' }}>{{ Lang.get('selfservice.highest_rated') }}</option>
                 </select>
 
-                <span class="sp-loading sp-px-4 sp-py-3 sp-ml-2 sp-bg-secondary sp-rounded sp-align-middle sp-hidden">
+                <span class="sp-loading sp-px-4 sp-py-3 sp-ms-2 sp-bg-secondary sp-rounded sp-align-middle sp-hidden">
                     <i class="fas fa-spinner fa-spin"></i>
                 </span>
             </div>

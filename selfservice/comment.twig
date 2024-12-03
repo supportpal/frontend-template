@@ -5,7 +5,7 @@
                 <a id="comment-{{ comment.id }}"></a>
 
                 <div class="sp-flex">
-                    <div class="sp-flex-initial sp-mr-4">
+                    <div class="sp-flex-initial sp-me-4">
                         <img src="{{ comment.author.avatar_url }}" class="sp-avatar sp-max-w-xs {% if comment.parent_id is empty %}md:sp-max-w-md{% endif %}" />
                     </div>
                     <div class="sp-grow">
@@ -36,7 +36,7 @@
                         {% if not comment.deleted_at %}
                             <div class="sp-comment-options sp-text-sm sp-text-secondary">
                                 {% if Config.get('settings.comment_ratings') %}
-                                    <span class="sp-mr-1">
+                                    <span class="sp-me-1">
                                         <a class="sp-rate-comment sp-inline-block sp-text-tertiary" data-comment="{{ comment.id }}" data-score="1">
                                             <i class="fas fa-thumbs-up
                                                       {% if comment.ratings[0] is defined and comment.ratings[0].score == '1' %}sp-text-secondary{% endif %}"></i>

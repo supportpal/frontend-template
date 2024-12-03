@@ -1,4 +1,4 @@
-<div class="sp-sidebar sp-hidden sp-flex-none sp-ml-8 sp-w-64 lg:sp-block print:sp-hidden">
+<div class="sp-sidebar sp-hidden sp-flex-none sp-ms-8 sp-w-64 lg:sp-block print:sp-hidden">
     {{ View.fireHook('frontend.sidebar_start') }}
 
     {% if categories is not empty and not categories.isEmpty() %}
@@ -9,7 +9,7 @@
                 <li>
                     <a href="{{ category.frontend_url }}">
                         {% if category.count is not empty %}
-                            <span class="sp-badge sp-float-right">{{ category.count }}</span>
+                            <span class="sp-badge sp-float-end">{{ category.count }}</span>
                         {% endif %}
                         <div class="nav-item" {% if currentCategory is not empty and currentCategory == category.id %}style="font-weight: bold;"{% endif %}>
                             {{ category.dashes|raw }}&nbsp;{{ category.name }}

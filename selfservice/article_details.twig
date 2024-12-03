@@ -1,10 +1,12 @@
 <ul class="sp-article-details sp-description">
-    <li>
-        <i class="fas fa-calendar-day sp-mr-1"></i> {{ formatDate(article.published_at) }}
-    </li>
+    {% if article.published %}
+        <li>
+            <i class="fas fa-calendar-day sp-me-1"></i> {{ formatDate(article.published_at) }}
+        </li>
+    {% endif %}
     {% if not article.categories.isEmpty() %}
         <li>
-            <i class="fas fa-folder sp-mr-1"></i>
+            <i class="fas fa-folder sp-me-1"></i>
             <ul class="sp-item-list">
                 {% for category in article.categories.sortBy('name') %}
                     <li><!--
@@ -16,7 +18,7 @@
     {% endif %}
     {% if not article.tags.isEmpty() %}
         <li>
-            <i class="fas fa-tags sp-mr-1"></i>
+            <i class="fas fa-tags sp-me-1"></i>
             <ul class="sp-item-list">
                 {% for tag in article.tags.sortBy('name') %}
                     <li><!--

@@ -1,6 +1,6 @@
 <div class="sp-message" data-id="{{ message.id }}">
 	<div class="sp-flex">
-		<div class="sp-flex-initial sp-hidden sp-mr-4 md:sp-block">
+		<div class="sp-flex-initial sp-hidden sp-me-4 md:sp-block">
 			<img src="{{ message.user.avatar_url }}" class="sp-avatar sp-max-w-xs md:sp-max-w-md" />
 		</div>
 		<div class="sp-grow">
@@ -35,13 +35,13 @@
 			{% for attachment in message.attachments %}
 				<li class="sp-relative" data-download-url="{{ attachment.direct_frontend_url }}" data-filename="{{ attachment.original_name }}">
                     {% if message.by != 0 %}
-						<div class="sp-delete-attachment sp-absolute sp-right-0 sp-px-2 sp-py-1/2 sp-bg-red-600 sp-rounded-tr
+						<div class="sp-delete-attachment sp-absolute sp-end-0 sp-px-2 sp-py-1/2 sp-bg-red-600 sp-rounded-se
                                 sp-text-white sp-cursor-pointer sp-z-10 hover:sp-bg-red-800"
 							 title="{{ Lang.get('general.delete') }}"
 							 data-url="{{ route('ticket.frontend.attachment.destroy') }}"
-                            data-token="{{ Request.input('token', '') }}"
-                            data-attachment-id="{{ attachment.id }}"
-                            data-hash="{{ attachment.upload_hash }}">
+                             data-token="{{ Request.input('token', '') }}"
+                             data-attachment-id="{{ attachment.id }}"
+                             data-hash="{{ attachment.upload_hash }}">
 							<i class="fas fa-times"></i>
 						</div>
 					{% endif %}

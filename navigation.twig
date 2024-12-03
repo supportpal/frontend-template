@@ -1,4 +1,4 @@
-<ul class="{% if not account %}sp-nav{% else %}sp-text-right{% endif %} sp-pl-0">
+<ul class="{% if not account %}sp-nav{% else %}sp-text-end{% endif %} sp-ps-0">
     {% if not account %}
         <li>
             <a href="{{ route('core.frontend.home') }}" {% if route starts with 'core.frontend.home' %}class="current"{% endif %}>

@@ -17,7 +17,7 @@
 {% endblock %}
 
 {% block sidebar %}
-    <div class="sp-sidebar sp-flex-none sp-w-full sp-px-6 sp-mb-4 xs:sp-px-0 xs:sp-mb-6 lg:sp-w-64 lg:sp-ml-8 lg:sp-mb-0">
+    <div class="sp-sidebar sp-flex-none sp-w-full sp-px-6 sp-mb-4 xs:sp-px-0 xs:sp-mb-6 lg:sp-w-64 lg:sp-ms-8 lg:sp-mb-0">
         {{ View.fireHook('frontend.sidebar_start') }}
 
         <div class="sp-sidebar-box">
@@ -80,7 +80,7 @@
 
     {% if download %}
         <div class="sp-alert">
-            <i class="fas fa-times sp-alert-close"></i>
+            <i class="fas fa-times sp-alert-close" title="{{ Lang.get('general.close') }}"></i>
             <strong>{{ Lang.get('ticket.downloading') }}</strong><br />
             {{ Lang.get('ticket.downloading_desc', {'href': download.direct_frontend_url|e})|raw }}
         </div>
