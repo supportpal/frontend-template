@@ -6,6 +6,13 @@
     {% if download %}
         <meta http-equiv="refresh" content="2;{{ download.direct_frontend_url }}" />
     {% endif %}
+
+    <style>
+        @media print {
+            body * { display: none; }
+            .sp-use-print-view { display: block !important; }
+        }
+    </style>
 {% endblock %}
 
 {% block title %}{{ ticket.subject }}{% endblock %}
@@ -20,17 +27,24 @@
     <div class="sp-sidebar sp-flex-none sp-w-full sp-px-6 sp-mb-4 xs:sp-px-0 xs:sp-mb-6 lg:sp-w-64 lg:sp-ms-8 lg:sp-mb-0">
         {{ View.fireHook('frontend.sidebar_start') }}
 
+        <div class="sp-print-ticket sp-mb-6">
+            <a href="{{ route('ticket.frontend.ticket.print', {'number': ticket.number, 'token': Request.get('token')}) }}"
+               class="sp-button sp-bg-tertiary" target="_blank">
+                <i class="fas fa-print" aria-hidden="true"></i>&nbsp; {{ Lang.get('general.print') }}
+            </a>
+        </div>
+
         <div class="sp-sidebar-box">
             <h2 class="sp-hidden lg:sp-block">{{ Lang.get('ticket.ticket_details') }}</h2>
 
             <div class="sp-collapsible sp-flex lg:sp-hidden">
                 <h4>{{ Lang.get('ticket.ticket_details') }}</h4>
-                <div class="sp-chevron print:sp-hidden">
+                <div class="sp-chevron">
                     <i class="fas fa-chevron-up" aria-hidden="true"></i>
                 </div>
             </div>
 
-            <div class="sp-hidden lg:sp-block print:sp-block">
+            <div class="sp-hidden lg:sp-block">
                 {% include 'frontend.' ~ template ~ '.ticket.ticket_details' %}
 
                 {% if customfields is not empty %}
@@ -44,6 +58,10 @@
 {% endblock %}
 
 {% block precontent %}
+    <div class="sp-use-print-view sp-hidden">
+        {{ Lang.get('ticket.use_ticket_print_view') }}
+    </div>
+
     <div class="sp-ticket-update sp-alert sp-alert-success sp-alert-sticky sp-hidden">
         <div class="sp-container sp-mx-auto">
             {{ Lang.get('messages.success_updated', {'item': mb_strtolower(Lang.choice('ticket.ticket', 1), 'UTF-8')}) }}
@@ -65,9 +83,11 @@
             {{ Lang.get('messages.error_updated', {'item': mb_strtolower(Lang.choice('ticket.ticket', 1), 'UTF-8')}) }}
         </div>
     </div>
+
     <div class="sp-ticket-custom sp-alert sp-alert-error sp-alert-sticky sp-hidden">
         <div class="sp-container sp-mx-auto"></div>
     </div>
+
     <div class="attachment sp-alert sp-alert-error sp-alert-sticky sp-hidden">
         <div class="sp-container sp-mx-auto"></div>
     </div>
@@ -165,10 +185,15 @@
         })(App, Echo);
     </script>
 
+    <script src="{{ asset_rev('resources/assets/dist/ticket-view.js') }}"></script>
     <script>
         var ticketId = "{{ ticket.id }}",
             closedStatusId = "{{ Config.get('settings.default_resolved_status') }}",
             descReplyOrder = {% if ticket.user.isDescendingReplyOrder() %}true{% else %}false{% endif %};
+
+        App.extend('FrontendTicketView', new SpTicket.FrontendTicket);
+        App.extend('TicketView', new SpTicket.TicketView(App.FrontendTicketView));
+        new SpTicket.FrontendDraftMessage;
     </script>
 
     <script src="{{ asset_rev('resources/assets/frontend/js/ticket.js') }}"></script>

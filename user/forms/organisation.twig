@@ -4,7 +4,7 @@
         <div class="sp-input-container">
             {{ form_text('organisation', organisation|default is not empty ? organisation.name : '',
                 (organisation is not empty and (new is defined or record.organisation.owner_id != record.id))
-                    ? {'readonly': 'readonly', 'size': 30} : {'size': 30}) }}
+                    ? {'readonly': 'readonly', 'size': 45} : {'size': 45}) }}
 
             {% if organisation|default is not empty and new is not defined %}
                 {% if record.organisation.isOwner(record.id) or record.organisation_access_level == 0 %}

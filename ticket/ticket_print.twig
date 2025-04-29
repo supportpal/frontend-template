@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html class="{{ get_template_mode(false) }}" dir="{{ get_template_dir() }}" lang="{{ App.getLocale() }}">
+
+<head>
+    {{ View.fireHook('operator.head_start') }}
+
+    <meta name="robots" content="noindex" />
+
+    <title>{{ ticket.subject }}</title>
+
+    {% include 'frontend.' ~ template ~ '.head_common' %}
+
+    {{ View.fireHook('frontend.head') }}
+    {{ View.fireHook('operator.head_end') }}
+</head>
+
+<body class="sp-bg-secondary sp-text-primary print:sp-bg-primary" data-disable-pace>
+
+    {{ View.fireHook('frontend.body_start') }}
+
+    <div class="sp-break-words xs:sp-px-6 print:sp-p-0">
+        {{ View.fireHook('frontend.wrapper_start') }}
+
+        <div class="sp-mx-auto sp-mt-6 xs:sp-mb-6">
+            {{ View.fireHook('frontend.content_start') }}
+            {{ View.fireHook('frontend.content_inner_start') }}
+
+            <h2 class="sp-ms-4 xs:sp-ms-0">{{ ticket.subject }}</h2>
+
+            <hr />
+
+            <h3 class="sp-ms-4 xs:sp-ms-0">{{ Lang.get('ticket.ticket_details') }}</h3>
+
+            <div class="sp-px-4 sp-pt-6 sp-py-2 sp-bg-primary xs:sp-px-6 xs:sp-rounded">
+                {% include 'frontend.' ~ template ~ '.ticket.ticket_details' %}
+
+                {% if customfields is not empty %}
+                    {% include 'frontend.' ~ template ~ '.ticket.ticket_custom_fields' with {'no_save': true} %}
+                {% endif %}
+            </div>
+
+            <h3 class="sp-ms-4 xs:sp-ms-0">{{ Lang.choice('general.message', 2) }}</h3>
+
+            <div class="sp-messages-container">
+                {% for message in messages %}
+                    {% include 'frontend.' ~ template ~ '.ticket.message' with {'message': message, 'unread': true} %}
+                {% endfor %}
+            </div>
+
+            {{ View.fireHook('frontend.content_inner_end') }}
+            {{ View.fireHook('frontend.content_end') }}
+        </div>
+
+        {{ View.fireHook('frontend.wrapper_end') }}
+    </div>
+
+    {{ View.fireHook('operator.footer') }}
+
+    {% include 'frontend.' ~ template ~ '.footer_common' %}
+
+    <!-- WYSIWYG Editor -->
+    <script src="{{ asset_rev('resources/assets/libs/editor.min.js') }}"></script>
+
+    <!-- File upload -->
+    <script src="{{ asset_rev('resources/assets/libs/fileupload/js/jquery.fileupload.min.js') }}"></script>
+
+    <!-- Attachment previews -->
+    <script src="{{ asset_rev('resources/assets/libs/att.preview/js/att.preview.min.js') }}"></script>
+
+    <!-- Custom fields -->
+    <script src="{{ asset_rev('resources/assets/general/js/customfields.js') }}"></script>
+
+    <script src="{{ asset_rev('resources/assets/dist/ticket-view.js') }}"></script>
+    <script>
+        App.extend('FrontendTicketView', new SpTicket.FrontendTicket);
+        App.extend('TicketView', new SpTicket.TicketView(App.FrontendTicketView));
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            // Date picker
+            $('.datepicker').datepicker();
+
+            // Timepicker
+            $('.timepicker').timepicker();
+
+            // Remove the "Mark as Resolved" button from the print view.
+            $('.sp-mark-resolved').remove();
+
+            App.FrontendTicketView.print();
+        });
+    </script>
+
+    {{ View.fireHook('frontend.body_end') }}
+
+</body>
+
+</html>

@@ -1,5 +1,5 @@
 <div class="sp-ticket-details">
-    <div class="sp-form-row">
+    <div class="sp-form-row md:sp-hidden print:sp-hidden">
         <label>{{ Lang.get('general.subject') }}</label>
         <div class="sp-input-container sp-ticket-subject">
             {{ ticket.subject }}
@@ -29,14 +29,16 @@
         </div>
     </div>
 
-    <div class="sp-form-row">
-        <label>{{ Lang.choice('ticket.priority', 1) }}</label>
-        <div class="sp-input-container">
-            <span class="sp-ticket-priority sp-badge" style="background-color: {{ ticket.priority.colour }}">
-                {{ ticket.priority.name }}
-            </span>
+    {% if priority_count > 1 %}
+        <div class="sp-form-row">
+            <label>{{ Lang.choice('ticket.priority', 1) }}</label>
+            <div class="sp-input-container">
+                <span class="sp-ticket-priority sp-badge" style="background-color: {{ ticket.priority.colour }}">
+                    {{ ticket.priority.name }}
+                </span>
+            </div>
         </div>
-    </div>
+    {% endif %}
 
     <div class="sp-form-row">
         <label>{{ Lang.get('ticket.submitted') }}</label>

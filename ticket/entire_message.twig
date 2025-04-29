@@ -2,6 +2,8 @@
 <html class="{{ get_template_mode(false) }}" dir="{{ get_template_dir() }}" lang="{{ App.getLocale() }}">
 
 <head>
+    {{ View.fireHook('frontend.head_start') }}
+
     <meta name="robots" content="noindex" />
 
     <title>{{ ticket.subject }}</title>
@@ -9,6 +11,7 @@
     {% include 'frontend.' ~ template ~ '.head_common' %}
 
     {{ View.fireHook('frontend.head') }}
+    {{ View.fireHook('frontend.head_end') }}
 </head>
 
 <body class="sp-bg-secondary sp-text-primary print:sp-bg-primary" data-disable-pace>
@@ -25,10 +28,16 @@
 
             <h2 class="sp-ms-4 xs:sp-ms-0">{{ ticket.subject }}</h2>
 
-            <div class="sp-content sp-bg-primary xs:sp-rounded">
+            <div class="sp-content">
                 {{ View.fireHook('frontend.content_start') }}
 
-                {% include 'frontend.' ~ template ~ '.ticket.message' %}
+                <div class="sp-bg-primary xs:sp-rounded">
+                    {{ View.fireHook('frontend.content_inner_start') }}
+
+                    {% include 'frontend.' ~ template ~ '.ticket.message' with {'unread': true} %}
+
+                    {{ View.fireHook('frontend.content_inner_end') }}
+                </div>
 
                 {{ View.fireHook('frontend.content_end') }}
             </div>
@@ -36,6 +45,8 @@
             {{ View.fireHook('frontend.wrapper_end') }}
         </div>
     </div>
+
+    {{ View.fireHook('frontend.footer') }}
 
     {% include 'frontend.' ~ template ~ '.footer_common' %}
 

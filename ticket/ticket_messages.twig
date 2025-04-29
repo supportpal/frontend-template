@@ -1,7 +1,11 @@
-<div class="sp-message-block">
-    {% for message in messages %}
-        {% if message.type == 0 %}
-            {% include 'frontend.' ~ template ~ '.ticket.message' %}
+<div class="sp-message-block sp-messages-container" data-position="inline">
+    {% for message in messages.where('type', 0) %}
+        {% if loop.last %}
+            {% set unread = true %}
+        {% else %}
+            {% set unread = lastViewed and lastViewed < message.created_at %}
         {% endif %}
+
+        {% include 'frontend.' ~ template ~ '.ticket.message' with {'unread': unread} %}
     {% endfor %}
 </div>

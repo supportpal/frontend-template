@@ -43,12 +43,14 @@
             </div>
         </div>
 
-        <div class="sp-form-row">
-            {{ form_label('priority', Lang.choice('ticket.priority', 1)) }}
-            <div class="sp-input-container">
-                {{ form_select('priority', department_priorities, null, {'autofocus': 'autofocus'}) }}
+        {% if department_priorities|length > 1 %}
+            <div class="sp-form-row">
+                {{ form_label('priority', Lang.choice('ticket.priority', 1)) }}
+                <div class="sp-input-container">
+                    {{ form_select('priority', department_priorities, null, {'autofocus': 'autofocus'}) }}
+                </div>
             </div>
-        </div>
+        {% endif %}
 
         {% if organisationUsers is not empty %}
             <div class="sp-form-row">

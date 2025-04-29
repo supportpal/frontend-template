@@ -97,7 +97,9 @@
     <h2>{{ Lang.get('general.content') }}</h2>
 
     <div class="sp-email-content sp-p-6 sp-border sp-border-secondary sp-rounded sp-overflow-x-auto">
-        {{ Purifier.clean(record.contents) }}
+        <div dir="auto">
+            {{ Purifier.clean(record.contents) }}
+        </div>
     </div>
 {% endblock %}
 

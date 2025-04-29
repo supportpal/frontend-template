@@ -1,4 +1,4 @@
-<form class="sp-custom-fields sp-mt-3 validate"
+<form class="sp-custom-fields sp-mt-4 validate"
       data-ajax="ajax"
       method="POST"
       action="{{ route('ticket.frontend.ticket.saveFields', {'number': ticket.number}) }}">
@@ -7,7 +7,7 @@
 
     {% include 'frontend.' ~ template ~ '.forms.custom_fields' %}
 
-    {% if ticket.locked == 0 %}
+    {% if ticket.locked == 0 and not no_save %}
         <div class="sp-form-button print:sp-hidden">
             {{ form_submit(Lang.get('general.save')) }}
         </div>
