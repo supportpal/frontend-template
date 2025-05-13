@@ -19,6 +19,13 @@
     <link rel="icon" href="{{ Config.get('settings.favicon_dark_mode') }}" sizes="32x32" media="(prefers-color-scheme: dark)" />
 {% endif %}
 
+{% set lightThemeColour = Config.get('template.themes.light.scheme.--color-background-primary') %}
+{% set darkThemeColour = Config.get('template.themes.dark.scheme.--color-background-primary') %}
+
+<meta name="theme-color" content="{{ get_template_mode(false) is same as('sp-theme-dark') ? darkThemeColour : lightThemeColour }}"
+      media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="{{ darkThemeColour }}" media="(prefers-color-scheme: dark)" />
+
 <!-- CSS -->
 {{ colourScheme|raw }}
 <script src="{{ asset_rev('/resources/assets/general/js/preload.js') }}"></script>
