@@ -31,7 +31,7 @@
             <div class="sp-content">
                 {{ View.fireHook('frontend.content_start') }}
 
-                <div class="sp-bg-primary xs:sp-rounded">
+                <div class="sp-messages-container sp-bg-primary xs:sp-rounded">
                     {{ View.fireHook('frontend.content_inner_start') }}
 
                     {% include 'frontend.' ~ template ~ '.ticket.message' with {'unread': true} %}
@@ -56,25 +56,10 @@
     <!-- Attachment previews -->
     <script src="{{ asset_rev('resources/assets/libs/att.preview/js/att.preview.min.js') }}"></script>
 
+    <script src="{{ asset_rev('resources/assets/dist/ticket-view.js') }}"></script>
     <script>
-        $(document).ready(function() {
-            // Open links in a new window/tab. Needs rel="noopener" due to
-            // https://www.jitbit.com/alexblog/256-targetblank---the-most-underestimated-vulnerability-ever/
-            $('.sp-message-text a').attr('target', '_blank').attr('rel', 'noopener');
-
-            // Load attachment previews
-            App.attachments.loadPreviews($('.sp-message'));
-
-            if (ZipFile.isSupported()) {
-                if ($('.sp-message').find('ul.sp-attachments li').length > 1) {
-                    $('.sp-message').find('.sp-download-all').show();
-                }
-            }
-
-            $('.sp-message').on('click', '.sp-download-all', function () {
-                (new ZipFile).create($(this).parents('.sp-message').find('.sp-attachments li'), $('title').text());
-            })
-        });
+        App.extend('FrontendTicketView', new SpTicket.FrontendTicket);
+        App.extend('TicketView', new SpTicket.TicketView(App.FrontendTicketView));
     </script>
 
     {{ View.fireHook('frontend.body_end') }}

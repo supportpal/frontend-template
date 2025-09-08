@@ -1,5 +1,5 @@
-<div class="sp-message-block sp-messages-container" data-position="inline">
-    {% for message in messages.where('type', 0) %}
+<div class="sp-messages-container" data-position="inline">
+    {% for message in messages %}
         {% if loop.last %}
             {% set unread = true %}
         {% else %}
