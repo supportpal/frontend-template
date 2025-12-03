@@ -1,6 +1,6 @@
 <div class="sp-messages-container" data-position="inline">
     {% for message in messages %}
-        {% if loop.last %}
+        {% if (ticket.user.isAscendingReplyOrder() and loop.last) or (ticket.user.isDescendingReplyOrder() and loop.first) %}
             {% set unread = true %}
         {% else %}
             {% set unread = lastViewed and lastViewed < message.created_at %}

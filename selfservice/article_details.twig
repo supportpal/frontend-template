@@ -1,9 +1,7 @@
 <ul class="sp-article-details sp-description">
-    {% if article.published %}
-        <li>
-            <i class="fas fa-calendar-day sp-me-1"></i> {{ formatDate(article.published_at) }}
-        </li>
-    {% endif %}
+    <li>
+        <i class="fas fa-calendar-day sp-me-1"></i> {{ article.published ? formatDate(article.published_at) : Lang.get('selfservice.not_published') }}
+    </li>
     {% if not article.categories.isEmpty() %}
         <li>
             <i class="fas fa-folder sp-me-1"></i>
