@@ -20,7 +20,7 @@
             <ul class="sp-item-list">
                 {% for tag in article.tags.sortBy('name') %}
                     <li><!--
-                        --><a href="{{ route('selfservice.tag', {'frontendType': type.slug, 'slug': tag.slug}) }}">{{ tag.name }}</a><!--
+                        --><a href="{{ route('selfservice.tag', {'frontendType': type.routeSlug(), 'slug': tag.routeSlug()}) }}">{{ tag.name }}</a><!--
                     --></li>
                 {% endfor %}
             </ul>

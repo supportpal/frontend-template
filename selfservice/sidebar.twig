@@ -27,7 +27,7 @@
             <ul class="sp-nav">
                 {% for tag in tags %}
                     <li>
-                        <a href="{{ route('selfservice.tag', { 'frontendType': type.slug, 'slug': tag.slug }) }}">
+                        <a href="{{ route('selfservice.tag', {'frontendType': type.routeSlug(), 'slug': tag.routeSlug()}) }}">
                             {{ tag.name }}
                         </a>
                     </li>
